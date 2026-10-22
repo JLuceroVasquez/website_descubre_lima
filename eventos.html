@@ -1,1 +1,244 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#11343a"><meta name="description" content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con fichas, filtros y enlaces a fuentes."><link rel="stylesheet" href="assets/estilos.css"><title>Rutas Locales Lima</title></head><body data-section="eventos"><a class="skip" href="#main">Saltar al contenido</a><header class="site-header"><div class="wrap nav"><a class="brand" href="index.html" aria-label="Rutas Locales Lima, inicio"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span> Rutas Locales <span style="font-weight:400">· Lima</span></a><button class="menu-toggle" id="mobile-menu" type="button" aria-expanded="false" aria-controls="nav-links">☰ Menú</button><nav class="links" id="nav-links" aria-label="Navegación principal"><a href="index.html">Inicio</a><a id="nav-atractivos" href="atractivos.html">Atractivos</a><a id="nav-restaurantes" href="restaurantes.html">¿A dónde comer?</a><a id="nav-eventos" href="eventos.html">Eventos</a></nav></div></header><main id="main"><section class="hero"><div class="wrap hero-inner"><div><div class="eyebrow" id="hero-eyebrow"></div><h1 id="hero-title"></h1><p id="hero-subtitle"></p><a class="btn btn-accent" href="#explorar">Explorar planes ↗</a></div><div class="hero-art" aria-hidden="true"><div class="pin one"><span>1</span></div><div class="pin two"><span>2</span></div><div class="pin three"><span>3</span></div></div></div></section><div class="wrap"><nav class="tabs" aria-label="Explorar secciones"><a id="tab-atractivos" class="tab" href="atractivos.html"><span>🏛 Atractivos</span><b id="count-atractivos"></b></a><a id="tab-restaurantes" class="tab" href="restaurantes.html"><span>🍽 ¿A dónde comer?</span><b id="count-restaurantes"></b></a><a id="tab-eventos" class="tab" href="eventos.html"><span>🎭 Eventos</span><b id="count-eventos"></b></a></nav><section class="catalog" id="explorar"><div class="section-head"><div><div class="eyebrow" style="color:var(--terra)">ENCUENTRA TU PRÓXIMO PLAN</div><h2 id="section-title"></h2><p id="section-description"></p></div></div><div class="notice" role="note"><strong>Información referencial:</strong> Las fichas provienen del inventario de octubre de 2026. Verifica horarios, tarifas, accesibilidad y fechas en las fuentes enlazadas antes de salir. Las ilustraciones no son fotografías de los lugares.</div><form class="filters" id="filter-form" onsubmit="return false"><div class="field"><label for="search">Buscar un lugar o plan</label><input id="search" type="search" placeholder="Ej.: museo, ceviche, concierto" autocomplete="off"></div><div class="field"><label for="district">Distrito</label><select id="district"><option value="">Todos los distritos</option></select></div><div class="field"><label id="category-label" for="category">Categoría / tipo</label><select id="category"><option value="">Todas</option></select></div><button id="clear" class="btn btn-light" type="button">Limpiar</button></form><div class="meta-line"><span id="result-count" aria-live="polite"></span><button type="button" class="toggle-favs" id="only-favs">☆ Ver favoritos</button></div><div class="cards" id="results" aria-label="Resultados del catálogo"></div><nav class="pages" aria-label="Paginación"><button id="prev" type="button" class="btn btn-light">← Anterior</button><span id="page-label" aria-live="polite"></span><button id="next" type="button" class="btn btn-light">Siguiente →</button></nav></section></div></main><footer class="site-footer"><div class="wrap footer-grid"><div><a class="brand" href="index.html" style="color:white">Rutas Locales · Lima</a><p>Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p><p>Desarrollado por Renzo Omar Villalta Castillo<br>Todos los derechos reservados · 2026</p></div><div><strong>Explora</strong><p><a href="atractivos.html">Atractivos</a> · <a href="restaurantes.html">¿A dónde comer?</a> · <a href="eventos.html">Eventos</a></p><p>Prototipo académico basado en inventario referencial.<br>Las reservas, pagos y rutas calculadas no forman parte de esta versión.</p></div></div></footer><dialog class="dialog" id="detail-modal" aria-labelledby="modal-title"><div class="dialog-content"><div class="dialog-top"><div><div class="kicker" id="modal-kicker"></div><h2 id="modal-title"></h2></div><button class="close" id="modal-close" aria-label="Cerrar ficha" type="button">×</button></div><p id="modal-description"></p><div class="detail-grid" id="modal-fields"></div><div class="detail-links" id="modal-links"></div><div class="related" id="related"></div></div></dialog><script src="assets/datos.js"></script><script src="assets/app.js"></script></body></html>
+<!doctype html>
+<!--
+  ============================================================
+  eventos.html · Sección "Eventos en Lima" de "Rutas Locales · Lima"
+  ------------------------------------------------------------
+  Las tres páginas de sección (atractivos, restaurantes, eventos)
+  comparten exactamente la misma estructura. Lo único que cambia es
+  el atributo data-section del <body>, que app.js lee para saber
+  qué datos mostrar y qué textos colocar.
+
+  Los elementos vacíos con id (hero-title, results, modal-fields…)
+  son "contenedores" que app.js rellena dinámicamente.
+  Estructura:
+    header  → logotipo, botón de menú móvil y navegación
+    main    → hero + pestañas + filtros + tarjetas + paginación
+    footer  → créditos y enlaces
+    dialog  → ventana modal con la ficha completa de un registro
+  ============================================================
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <!-- Viewport: necesario para que las media queries funcionen en móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#11343a">
+    <meta
+      name="description"
+      content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con fichas, filtros y enlaces a fuentes."
+    >
+    <title>Eventos en Lima | Rutas Locales Lima</title>
+
+    <!-- Hoja de estilos externa: todo el diseño visual del sitio -->
+    <link rel="stylesheet" href="assets/estilos.css">
+  </head>
+
+  <!-- data-section indica a app.js qué sección del inventario cargar -->
+  <body data-section="eventos">
+    <!-- Enlace de accesibilidad: permite saltar directo al contenido con el teclado -->
+    <a class="skip" href="#main">Saltar al contenido</a>
+
+    <!-- ================= CABECERA ================= -->
+    <header class="site-header">
+      <div class="wrap nav">
+        <!-- Logotipo: los 4 <i> se dibujan como cuadros con CSS Grid -->
+        <a class="brand" href="index.html" aria-label="Rutas Locales Lima, inicio">
+          <span class="logo" aria-hidden="true">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+          Rutas Locales <span class="brand-light">· Lima</span>
+        </a>
+
+        <!-- Botón del menú móvil: visible solo en pantallas pequeñas (ver media query) -->
+        <button
+          class="menu-toggle"
+          id="mobile-menu"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          ☰ Menú
+        </button>
+
+        <!-- Navegación principal. app.js marca con la clase .active el enlace de la página actual -->
+        <nav class="links" id="nav-links" aria-label="Navegación principal">
+          <a id="nav-inicio" href="index.html">Inicio</a>
+          <a id="nav-atractivos" href="atractivos.html">Atractivos</a>
+          <a id="nav-restaurantes" href="restaurantes.html">¿A dónde comer?</a>
+          <a id="nav-eventos" href="eventos.html">Eventos</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ================= CONTENIDO PRINCIPAL ================= -->
+    <main id="main">
+      <!-- HERO: los textos se completan desde app.js según la sección -->
+      <section class="hero">
+        <div class="wrap hero-inner">
+          <div>
+            <p class="eyebrow" id="hero-eyebrow"></p>
+            <h1 id="hero-title"></h1>
+            <p id="hero-subtitle"></p>
+            <a class="btn btn-accent" href="#explorar">Explorar planes ↗</a>
+          </div>
+
+          <!-- Ilustración decorativa hecha solo con CSS -->
+          <div class="hero-art" aria-hidden="true">
+            <div class="pin one"><span>1</span></div>
+            <div class="pin two"><span>2</span></div>
+            <div class="pin three"><span>3</span></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="wrap">
+        <!-- PESTAÑAS: acceso rápido a las tres secciones con su número de fichas -->
+        <nav class="tabs" aria-label="Explorar secciones">
+          <a class="tab" id="tab-atractivos" href="atractivos.html">
+            <span>🏛 Atractivos</span>
+            <b id="count-atractivos"></b>
+          </a>
+          <a class="tab" id="tab-restaurantes" href="restaurantes.html">
+            <span>🍽 ¿A dónde comer?</span>
+            <b id="count-restaurantes"></b>
+          </a>
+          <a class="tab" id="tab-eventos" href="eventos.html">
+            <span>🎭 Eventos</span>
+            <b id="count-eventos"></b>
+          </a>
+        </nav>
+
+        <!-- CATÁLOGO -->
+        <section class="catalog" id="explorar">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow eyebrow-terra">Encuentra tu próximo plan</p>
+              <h2 id="section-title"></h2>
+              <p id="section-description"></p>
+            </div>
+          </div>
+
+          <div class="notice" role="note">
+            <strong>Información referencial:</strong> Las fichas provienen del
+            inventario de octubre de 2026. Verifica horarios, tarifas,
+            accesibilidad y fechas en las fuentes enlazadas antes de salir. Las
+            ilustraciones no son fotografías de los lugares.
+          </div>
+
+          <!--
+            FORMULARIO DE FILTROS
+            Cada control tiene un id para que app.js lea su valor y escuche
+            sus eventos (input / change / click). Las opciones de los <select>
+            se generan a partir de los datos.
+          -->
+          <form class="filters" id="filter-form">
+            <div class="field">
+              <label for="search">Buscar un lugar o plan</label>
+              <input
+                id="search"
+                name="search"
+                type="search"
+                placeholder="Ej.: museo, ceviche, concierto"
+                autocomplete="off"
+              >
+            </div>
+
+            <div class="field">
+              <label for="district">Distrito</label>
+              <select id="district" name="district">
+                <option value="">Todos los distritos</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label id="category-label" for="category">Categoría / tipo</label>
+              <select id="category" name="category">
+                <option value="">Todas</option>
+              </select>
+            </div>
+
+            <button class="btn btn-light" id="clear" type="button">Limpiar</button>
+          </form>
+
+          <!-- Línea informativa: cantidad de resultados y filtro de favoritos -->
+          <div class="meta-line">
+            <span id="result-count" aria-live="polite"></span>
+            <button class="toggle-favs" id="only-favs" type="button">☆ Ver favoritos</button>
+          </div>
+
+          <!-- Contenedor de tarjetas: app.js inserta aquí los resultados filtrados -->
+          <div class="cards" id="results" aria-label="Resultados del catálogo"></div>
+
+          <!-- Paginación: 12 tarjetas por página -->
+          <nav class="pages" aria-label="Paginación">
+            <button class="btn btn-light" id="prev" type="button">← Anterior</button>
+            <span id="page-label" aria-live="polite"></span>
+            <button class="btn btn-light" id="next" type="button">Siguiente →</button>
+          </nav>
+        </section>
+      </div>
+    </main>
+
+    <!-- ================= PIE DE PÁGINA ================= -->
+    <!-- .footer-grid es un contenedor flexible de dos columnas que se apilan en móvil -->
+    <footer class="site-footer">
+      <div class="wrap footer-grid">
+        <div>
+          <a class="brand brand-footer" href="index.html">Rutas Locales · Lima</a>
+          <p>Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p>
+          <p>
+            Desarrollado por Renzo Omar Villalta Castillo<br>
+            Todos los derechos reservados · 2026
+          </p>
+        </div>
+
+        <div>
+          <strong>Explora</strong>
+          <p>
+            <a href="atractivos.html">Atractivos</a> ·
+            <a href="restaurantes.html">¿A dónde comer?</a> ·
+            <a href="eventos.html">Eventos</a>
+          </p>
+          <p>
+            Prototipo académico basado en inventario referencial.<br>
+            Las reservas, pagos y rutas calculadas no forman parte de esta versión.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!--
+      VENTANA MODAL (<dialog>)
+      Se abre con showModal() desde app.js al pulsar "Ver ficha".
+      Sus contenedores (modal-title, modal-fields, …) se rellenan con
+      los datos del registro elegido.
+    -->
+    <dialog class="dialog" id="detail-modal" aria-labelledby="modal-title">
+      <div class="dialog-content">
+        <div class="dialog-top">
+          <div>
+            <div class="kicker" id="modal-kicker"></div>
+            <h2 id="modal-title"></h2>
+          </div>
+          <button class="close" id="modal-close" type="button" aria-label="Cerrar ficha">×</button>
+        </div>
+
+        <p id="modal-description"></p>
+        <div class="detail-grid" id="modal-fields"></div>
+        <div class="detail-links" id="modal-links"></div>
+        <div class="related" id="related"></div>
+      </div>
+    </dialog>
+
+    <!--
+      Scripts al final del <body>:
+      1) datos.js define window.INVENTARIO con los registros.
+      2) app.js construye la interfaz y responde a las acciones del usuario.
+    -->
+    <script src="assets/datos.js"></script>
+    <script src="assets/app.js"></script>
+  </body>
+</html>

@@ -1,1 +1,996 @@
-:root{--deep:#11343a;--primary:#0f4c54;--terra:#aa4c2c;--ink:#162c32;--canvas:#f8f6f1;--mist:#ebf1ef;--border:#d6ddda;--muted:#526467;--radius:16px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif}a{color:var(--primary)}button,input,select{font:inherit}button,a,select,input{outline-offset:3px}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #e6a65c}h1,h2,h3{font-family:Georgia,'Times New Roman',serif;line-height:1.15;margin:0 0 14px}h1{font-size:clamp(2.6rem,5vw,4.8rem);letter-spacing:-.045em}h2{font-size:clamp(1.8rem,3vw,2.7rem)}h3{font-size:1.45rem}p{margin:0 0 16px}.wrap{max-width:1180px;margin:auto;padding:0 24px}.skip{position:absolute;left:-9999px;top:0;background:white;padding:14px;z-index:200}.skip:focus{left:8px}.site-header{background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;box-shadow:0 5px 20px #11343a09}.nav{display:flex;align-items:center;justify-content:space-between;min-height:74px;gap:16px}.brand{font-weight:850;text-decoration:none;color:var(--deep);display:flex;align-items:center;gap:12px;white-space:nowrap;font-size:1.1rem}.logo{display:grid;grid-template-columns:repeat(2,9px);gap:3px;transform:rotate(-19deg)}.logo i{width:9px;height:9px;border-radius:2px;background:var(--primary)}.logo i:nth-child(2),.logo i:nth-child(3){background:var(--terra)}.links{display:flex;gap:6px;align-items:center}.links a{text-decoration:none;color:var(--ink);padding:10px 14px;border-radius:10px;font-weight:650;font-size:.94rem}.links a:hover,.links a.active{background:var(--mist);color:var(--primary)}.menu-toggle{display:none;border:1px solid var(--border);background:white;border-radius:10px;padding:8px 14px;min-height:44px;cursor:pointer}.hero{background:var(--deep);color:white;overflow:hidden}.hero-inner{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(310px,.9fr);align-items:center;min-height:385px;gap:40px;padding-top:54px;padding-bottom:54px}.eyebrow{color:#e4aa91;letter-spacing:.18em;font-size:.75rem;font-weight:850;text-transform:uppercase;margin-bottom:18px}.hero p{color:#e0e8e5;max-width:56ch;font-size:1.1rem}.hero-art{min-height:285px;border-radius:80px 120px 50px 100px;position:relative;background:radial-gradient(circle at 75% 33%,#eec399 0 15%,transparent 15.5%),linear-gradient(155deg,#cddfd3 0 34%,#f0e6d1 34% 54%,#83b1a7 54% 75%,#c86e46 75%);border:8px solid #ffffff15;transform:rotate(-3deg)}.hero-art:before{content:"";position:absolute;inset:30px 20px;border:5px solid #0f4c5455;border-radius:55% 25% 40% 20%;transform:rotate(-17deg)}.pin{position:absolute;background:var(--terra);color:white;min-width:45px;height:45px;border:3px solid white;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:grid;place-items:center;box-shadow:0 8px 16px #0003;font-size:1.1rem}.pin span{transform:rotate(45deg)}.pin.one{top:20%;left:28%}.pin.two{top:48%;left:60%;background:var(--primary)}.pin.three{top:65%;left:22%;background:var(--primary)}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 20px;border:1.5px solid transparent;border-radius:10px;font-weight:750;text-decoration:none;cursor:pointer;transition:.2s;gap:8px}.btn-primary{background:var(--primary);color:white}.btn-accent{background:var(--terra);color:white}.btn-light{background:white;color:var(--primary);border-color:var(--primary)}.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}.btn.small{font-size:.85rem;padding:8px 12px;min-height:40px}.btn:disabled{opacity:.4;cursor:not-allowed}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0}.tab{display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;border:1px solid var(--border);border-radius:15px;background:white;padding:17px 20px;font-weight:800;color:var(--ink)}.tab b{font-size:.85rem;color:var(--muted)}.tab.current{background:var(--mist);border-color:var(--primary)}main section.catalog{padding:42px 0 72px}.section-head{display:flex;justify-content:space-between;gap:25px;align-items:end;margin-bottom:24px}.section-head p{color:var(--muted);max-width:650px}.notice{background:#fff2d9;border-left:4px solid #9d601b;padding:15px 18px;border-radius:8px;color:#714415;font-size:.91rem;margin:22px 0}.filters{background:white;border:1px solid var(--border);padding:22px;border-radius:16px;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:15px;align-items:end;box-shadow:0 8px 30px #163a3909}.field label{font-weight:750;font-size:.85rem;display:block;margin-bottom:8px}.field input,.field select{width:100%;min-height:46px;border:1px solid #849995;border-radius:9px;padding:10px 12px;background:white;color:var(--ink)}.meta-line{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center;margin:26px 0 16px;color:var(--muted);font-size:.94rem}.toggle-favs{border:0;background:transparent;color:var(--primary);text-decoration:underline;cursor:pointer;font-weight:700}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.card{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 12px 26px #11343a0d}.card-art{height:170px;position:relative;overflow:hidden;background:linear-gradient(145deg,#dfece8 0 50%,#b6d1c5 50%)}.card-art:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:#f2cf9d;right:-32px;top:-85px}.card-art:after{content:"";position:absolute;bottom:0;left:-8%;width:116%;height:85px;background:repeating-linear-gradient(90deg,#0f4c54 0 3px,transparent 3px 60px),linear-gradient(#d0b8a2,#d0b8a2);clip-path:polygon(0 45%,14% 20%,22% 40%,41% 12%,54% 40%,68% 18%,82% 38%,100% 10%,100% 100%,0 100%);opacity:.72}.card-art.food{background:linear-gradient(155deg,#f5e3ce 20%,#edd0b0 55%,#adc9ba 55%)}.card-art.food:after{width:135px;height:135px;bottom:-35px;left:calc(50% - 68px);border:18px solid #fffdf8;border-radius:50%;background:radial-gradient(circle at 45% 40%,#cc6e3d 0 22%,#648a64 24% 35%,#f4ce90 38% 60%,#a14b29 65%);clip-path:none;opacity:1;box-shadow:0 7px 30px #40201930}.card-art.event{background:linear-gradient(145deg,#e8d8cf 0 52%,#a6c8ba 52%)}.card-art.event:after{width:65%;height:115px;bottom:-18px;left:18%;background:linear-gradient(135deg,#a84c2c,#6e2f27);clip-path:polygon(0 0,100% 0,90% 100%,10% 100%);opacity:1}.art-tag{position:absolute;top:12px;left:12px;background:white;border-radius:20px;padding:5px 11px;font-weight:800;font-size:.72rem;z-index:2}.fav{position:absolute;right:12px;top:12px;z-index:2;min-height:38px;min-width:38px;border-radius:50%;border:1px solid #d6ddda;background:white;color:var(--terra);font-size:1.25rem;cursor:pointer}.fav[aria-pressed=true]{background:#fbe7dc}.card-body{padding:20px;display:flex;flex-direction:column;flex:1}.kicker{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);font-weight:850;margin-bottom:9px}.card h3{font-size:1.36rem;margin-bottom:10px}.card p{color:#4a5d60;font-size:.9rem;line-height:1.65}.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:12px}.chip{background:var(--mist);color:var(--primary);padding:5px 10px;border-radius:30px;font-size:.73rem;font-weight:750;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.card-bottom{border-top:1px solid var(--border);margin-top:18px;padding-top:15px;display:flex;align-items:center;justify-content:space-between;gap:10px}.stamp{font-size:.76rem;color:var(--muted)}.pages{display:flex;justify-content:center;align-items:center;gap:15px;margin-top:28px}.empty{padding:40px;background:white;text-align:center;border:1px dashed var(--border);border-radius:16px}.site-footer{background:var(--deep);color:#e0e8e5;padding:40px 0}.site-footer p{font-size:.9rem}.footer-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}.footer-grid a{color:white}.dialog{border:0;padding:0;background:white;border-radius:18px;max-width:min(790px,calc(100% - 25px));width:100%;max-height:90vh;box-shadow:0 25px 75px #0006;color:var(--ink)}.dialog::backdrop{background:#092628ab}.dialog-content{padding:28px}.dialog-top{display:flex;justify-content:space-between;align-items:start;gap:18px}.close{border:1px solid var(--border);background:white;border-radius:9px;min-height:40px;min-width:40px;cursor:pointer;font-size:1.3rem}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}.detail{background:var(--canvas);border:1px solid var(--border);border-radius:12px;padding:13px 16px;overflow-wrap:anywhere}.detail strong{display:block;font-size:.79rem;text-transform:uppercase;letter-spacing:.045em;color:var(--primary);margin-bottom:7px}.detail span{white-space:pre-wrap;font-size:.91rem}.detail-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.related{margin-top:25px;padding-top:18px;border-top:1px solid var(--border)}.related-list{display:flex;flex-wrap:wrap;gap:8px}.related-list button{border:1px solid var(--border);background:white;border-radius:10px;padding:9px;cursor:pointer;color:var(--primary)}@media(max-width:920px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.filters{grid-template-columns:1fr 1fr}.hero-inner{gap:22px}.hero-art{min-height:240px}}@media(max-width:680px){.wrap{padding:0 17px}.menu-toggle{display:block}.links{display:none;position:absolute;top:74px;left:0;right:0;background:white;box-shadow:0 12px 16px #0002;padding:12px 20px;flex-direction:column;align-items:stretch}.links.open{display:flex}.hero-inner{grid-template-columns:1fr;padding-top:50px;padding-bottom:25px}.hero-art{min-height:170px;margin-top:10px}.tabs{grid-template-columns:1fr;gap:8px}.section-head{display:block}.filters{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}.dialog-content{padding:18px}.footer-grid{display:block}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+/* ============================================================
+   estilos.css · Sistema de diseño de "Rutas Locales · Lima"
+   ------------------------------------------------------------
+   Toda la presentación visual del sitio vive en este archivo.
+   Los estilos se aplican principalmente con selectores de CLASE
+   (.card, .btn, .hero…), de modo que el HTML solo describe la
+   estructura y el contenido.
+
+   Índice
+     1.  Variables (paleta y medidas)
+     2.  Estilos base y tipografía
+     3.  Contenedor general (.wrap) y accesibilidad
+     4.  Cabecera y navegación          → Flexbox
+     5.  Hero (portada de cada página)  → CSS Grid + position
+     6.  Botones
+     7.  Pestañas de sección            → CSS Grid
+     8.  Catálogo: encabezado, aviso y filtros
+     9.  Tarjetas (cards)               → Grid + Flexbox
+     10. Ilustraciones decorativas de las tarjetas
+     11. Paginación y estado vacío
+     12. Pie de página
+     13. Ventana modal (ficha de detalle)
+     14. Diseño responsivo (media queries)
+     15. Preferencia de movimiento reducido
+   ============================================================ */
+
+
+/* ============================================================
+   1. VARIABLES
+   Custom properties reutilizables: cambiar un color aquí lo
+   actualiza en todo el sitio.
+   ============================================================ */
+:root {
+  --deep: #11343a;      /* petróleo: fondos oscuros (hero, footer) */
+  --primary: #0f4c54;   /* color primario: botones y enlaces */
+  --terra: #aa4c2c;     /* terracota: acentos */
+  --ink: #162c32;       /* color de texto principal */
+  --canvas: #f8f6f1;    /* lienzo: fondo general */
+  --mist: #ebf1ef;      /* bruma: fondos suaves */
+  --border: #d6ddda;    /* bordes */
+  --muted: #526467;     /* texto secundario */
+  --radius: 16px;       /* radio de esquinas habitual */
+}
+
+
+/* ============================================================
+   2. ESTILOS BASE Y TIPOGRAFÍA
+   ============================================================ */
+
+/* box-sizing: border-box → el padding y el borde se incluyen
+   dentro del ancho declarado (modelo de caja más predecible) */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth; /* desplazamiento suave en enlaces #ancla */
+}
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+a {
+  color: var(--primary);
+}
+
+/* Los controles de formulario heredan la tipografía del sitio */
+button,
+input,
+select {
+  font: inherit;
+}
+
+/* Contorno visible al navegar con teclado (accesibilidad) */
+button,
+a,
+select,
+input {
+  outline-offset: 3px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #e6a65c;
+}
+
+/* Encabezados con tipografía serif */
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.15;
+  margin: 0 0 14px;
+}
+
+/* clamp(mín, preferido, máx): el tamaño se adapta al ancho de la ventana */
+h1 {
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  letter-spacing: -0.045em;
+}
+
+h2 {
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+}
+
+h3 {
+  font-size: 1.45rem;
+}
+
+p {
+  margin: 0 0 16px;
+}
+
+
+/* ============================================================
+   3. CONTENEDOR GENERAL Y ACCESIBILIDAD
+   ============================================================ */
+
+/* .wrap centra el contenido y limita su ancho máximo */
+.wrap {
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 24px;
+}
+
+/* Enlace "Saltar al contenido": oculto fuera de pantalla
+   (position: absolute) y visible solo al recibir el foco */
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: 14px;
+  background: white;
+}
+
+.skip:focus {
+  left: 8px;
+}
+
+
+/* ============================================================
+   4. CABECERA Y NAVEGACIÓN (Flexbox)
+   ============================================================ */
+
+/* position: sticky → la cabecera queda fija arriba al hacer scroll */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 5px 20px #11343a09;
+}
+
+/* Fila flexible: logotipo a la izquierda, navegación a la derecha */
+.nav {
+  display: flex;
+  align-items: center;             /* centrado vertical */
+  justify-content: space-between;  /* separa los extremos */
+  gap: 16px;
+  min-height: 74px;
+}
+
+/* Logotipo + texto alineados en fila */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--deep);
+  font-size: 1.1rem;
+  font-weight: 850;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Parte del nombre con peso normal: "· Lima" */
+.brand-light {
+  font-weight: 400;
+}
+
+/* Variante del logotipo usada sobre el fondo oscuro del pie */
+.brand-footer {
+  color: white;
+}
+
+/* Logotipo: rejilla de 2×2 cuadros girada */
+.logo {
+  display: grid;
+  grid-template-columns: repeat(2, 9px);
+  gap: 3px;
+  transform: rotate(-19deg);
+}
+
+.logo i {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--primary);
+}
+
+.logo i:nth-child(2),
+.logo i:nth-child(3) {
+  background: var(--terra);
+}
+
+/* Enlaces de navegación en fila; flex-wrap permite saltar de línea */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.links a {
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 0.94rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+/* .active la agrega app.js al enlace de la página actual */
+.links a:hover,
+.links a.active {
+  background: var(--mist);
+  color: var(--primary);
+}
+
+/* Botón del menú móvil: oculto en escritorio (se muestra en la media query de 680px) */
+.menu-toggle {
+  display: none;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   5. HERO (CSS Grid + posicionamiento)
+   ============================================================ */
+.hero {
+  overflow: hidden;
+  background: var(--deep);
+  color: white;
+}
+
+/* Dos columnas: texto (1.1fr) e ilustración (0.9fr, mínimo 310px) */
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(310px, 0.9fr);
+  align-items: center;
+  gap: 40px;
+  min-height: 385px;
+  padding-top: 54px;
+  padding-bottom: 54px;
+}
+
+/* Antetítulo en mayúsculas */
+.eyebrow {
+  margin-bottom: 18px;
+  color: #e4aa91;
+  font-size: 0.75rem;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Variante terracota del antetítulo, para fondos claros.
+   Se usan dos clases (.eyebrow.eyebrow-terra) para ganar en
+   especificidad a reglas como ".section-head p". */
+.eyebrow.eyebrow-terra {
+  color: var(--terra);
+}
+
+.hero p {
+  max-width: 56ch;
+  color: #e0e8e5;
+  font-size: 1.1rem;
+}
+
+/* El antetítulo del hero es un <p>: esta regla, más específica que
+   ".hero p", conserva su tamaño y color propios */
+.hero .eyebrow {
+  color: #e4aa91;
+  font-size: 0.75rem;
+}
+
+/* Ilustración del hero: position: relative la convierte en
+   referencia para los "pines" que se ubican con position: absolute */
+.hero-art {
+  position: relative;
+  min-height: 285px;
+  border: 8px solid #ffffff15;
+  border-radius: 80px 120px 50px 100px;
+  background:
+    radial-gradient(circle at 75% 33%, #eec399 0 15%, transparent 15.5%),
+    linear-gradient(155deg, #cddfd3 0 34%, #f0e6d1 34% 54%, #83b1a7 54% 75%, #c86e46 75%);
+  transform: rotate(-3deg);
+}
+
+/* Pseudo-elemento: trazo de "ruta" dibujado sobre la ilustración */
+.hero-art::before {
+  content: "";
+  position: absolute;
+  inset: 30px 20px;
+  border: 5px solid #0f4c5455;
+  border-radius: 55% 25% 40% 20%;
+  transform: rotate(-17deg);
+}
+
+/* Pines de mapa ubicados en coordenadas porcentuales */
+.pin {
+  position: absolute;
+  display: grid;
+  place-items: center;   /* centra el número dentro del pin */
+  min-width: 45px;
+  height: 45px;
+  border: 3px solid white;
+  border-radius: 50% 50% 50% 4px;
+  background: var(--terra);
+  color: white;
+  font-size: 1.1rem;
+  box-shadow: 0 8px 16px #0003;
+  transform: rotate(-45deg);
+}
+
+.pin span {
+  transform: rotate(45deg); /* devuelve el número a posición vertical */
+}
+
+.pin.one {
+  top: 20%;
+  left: 28%;
+}
+
+.pin.two {
+  top: 48%;
+  left: 60%;
+  background: var(--primary);
+}
+
+.pin.three {
+  top: 65%;
+  left: 22%;
+  background: var(--primary);
+}
+
+
+/* ============================================================
+   6. BOTONES
+   .btn es la clase base; .btn-primary, .btn-accent y .btn-light
+   son variantes de color; .small es un modificador de tamaño.
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-accent {
+  background: var(--terra);
+  color: white;
+}
+
+.btn-light {
+  border-color: var(--primary);
+  background: white;
+  color: var(--primary);
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn.small {
+  min-height: 40px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+/* JavaScript desactiva "Anterior"/"Siguiente" en la primera/última página */
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+
+/* ============================================================
+   7. PESTAÑAS DE SECCIÓN (CSS Grid)
+   ============================================================ */
+
+/* Tres columnas iguales; en móvil pasan a una sola */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 28px 0;
+}
+
+/* Cada pestaña es una fila flexible: nombre a la izquierda, contador a la derecha */
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 17px 20px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: white;
+  color: var(--ink);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.tab b {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* .current la agrega app.js a la pestaña de la sección actual */
+.tab.current {
+  border-color: var(--primary);
+  background: var(--mist);
+}
+
+
+/* ============================================================
+   8. CATÁLOGO: ENCABEZADO, AVISO Y FILTROS
+   ============================================================ */
+main section.catalog {
+  padding: 42px 0 72px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 25px;
+  margin-bottom: 24px;
+}
+
+.section-head p {
+  max-width: 650px;
+  color: var(--muted);
+}
+
+/* Caja de aviso con borde lateral */
+.notice {
+  margin: 22px 0;
+  padding: 15px 18px;
+  border-left: 4px solid #9d601b;
+  border-radius: 8px;
+  background: #fff2d9;
+  color: #714415;
+  font-size: 0.91rem;
+}
+
+/* Variante con más separación, usada en la portada */
+.notice-home {
+  margin-top: 35px;
+}
+
+/* Formulario de filtros: rejilla de 4 columnas
+   (buscador ancho, distrito, categoría y botón Limpiar) */
+.filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  align-items: end;
+  gap: 15px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: white;
+  box-shadow: 0 8px 30px #163a3909;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  font-weight: 750;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #849995;
+  border-radius: 9px;
+  background: white;
+  color: var(--ink);
+}
+
+/* Línea con contador de resultados y botón de favoritos */
+.meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 26px 0 16px;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.toggle-favs {
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   9. TARJETAS (Grid para la rejilla, Flexbox dentro de cada tarjeta)
+   ============================================================ */
+
+/* Rejilla de 3 columnas (2 en tablet, 1 en móvil) */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* Separación superior de la rejilla en la portada */
+.cards-home {
+  margin-top: 28px;
+}
+
+/* La tarjeta es una columna flexible: ilustración arriba, cuerpo abajo */
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: white;
+  box-shadow: 0 12px 26px #11343a0d;
+}
+
+/* flex: 1 → el cuerpo ocupa todo el alto disponible, así todas las
+   tarjetas de una fila tienen el pie (.card-bottom) a la misma altura */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px;
+}
+
+/* Antetítulo de tarjeta: distrito · categoría */
+.kicker {
+  margin-bottom: 9px;
+  color: var(--terra);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  font-size: 1.36rem;
+}
+
+.card p {
+  color: #4a5d60;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+/* Etiquetas de datos rápidos; margin-top: auto las empuja al fondo */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.chip {
+  max-width: 100%;
+  overflow: hidden;
+  padding: 5px 10px;
+  border-radius: 30px;
+  background: var(--mist);
+  color: var(--primary);
+  font-size: 0.73rem;
+  font-weight: 750;
+  text-overflow: ellipsis;  /* texto largo termina en "…" */
+  white-space: nowrap;
+}
+
+/* Pie de la tarjeta: fecha de revisión y botón "Ver ficha" en los extremos */
+.card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+
+.stamp {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+/* Botón de favorito (estrella) sobre la ilustración */
+.fav {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  min-width: 38px;
+  min-height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: white;
+  color: var(--terra);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+/* Estado "marcado": JavaScript cambia aria-pressed a "true" */
+.fav[aria-pressed="true"] {
+  background: #fbe7dc;
+}
+
+/* Etiqueta "Ilustración decorativa" sobre la imagen */
+.art-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 5px 11px;
+  border-radius: 20px;
+  background: white;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+
+/* ============================================================
+   10. ILUSTRACIONES DECORATIVAS DE LAS TARJETAS
+   Dibujadas solo con CSS (degradados, pseudo-elementos y clip-path).
+   .card-art    → atractivos (paisaje urbano)
+   .card-art.food  → restaurantes (plato)
+   .card-art.event → eventos (escenario)
+   ============================================================ */
+.card-art {
+  position: relative;  /* referencia para los pseudo-elementos absolutos */
+  height: 170px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #dfece8 0 50%, #b6d1c5 50%);
+}
+
+/* Sol */
+.card-art::before {
+  content: "";
+  position: absolute;
+  top: -85px;
+  right: -32px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: #f2cf9d;
+}
+
+/* Silueta de la ciudad */
+.card-art::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -8%;
+  width: 116%;
+  height: 85px;
+  background:
+    repeating-linear-gradient(90deg, #0f4c54 0 3px, transparent 3px 60px),
+    linear-gradient(#d0b8a2, #d0b8a2);
+  clip-path: polygon(0 45%, 14% 20%, 22% 40%, 41% 12%, 54% 40%, 68% 18%, 82% 38%, 100% 10%, 100% 100%, 0 100%);
+  opacity: 0.72;
+}
+
+/* Variante restaurantes: plato visto desde arriba */
+.card-art.food {
+  background: linear-gradient(155deg, #f5e3ce 20%, #edd0b0 55%, #adc9ba 55%);
+}
+
+.card-art.food::after {
+  bottom: -35px;
+  left: calc(50% - 68px);
+  width: 135px;
+  height: 135px;
+  border: 18px solid #fffdf8;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 40%, #cc6e3d 0 22%, #648a64 24% 35%, #f4ce90 38% 60%, #a14b29 65%);
+  clip-path: none;
+  opacity: 1;
+  box-shadow: 0 7px 30px #40201930;
+}
+
+/* Variante eventos: escenario */
+.card-art.event {
+  background: linear-gradient(145deg, #e8d8cf 0 52%, #a6c8ba 52%);
+}
+
+.card-art.event::after {
+  bottom: -18px;
+  left: 18%;
+  width: 65%;
+  height: 115px;
+  background: linear-gradient(135deg, #a84c2c, #6e2f27);
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+  opacity: 1;
+}
+
+
+/* ============================================================
+   11. PAGINACIÓN Y ESTADO VACÍO
+   ============================================================ */
+.pages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 28px;
+}
+
+/* Mensaje cuando los filtros no devuelven resultados */
+.empty {
+  padding: 40px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: white;
+  text-align: center;
+}
+
+
+/* ============================================================
+   12. PIE DE PÁGINA
+   ============================================================ */
+.site-footer {
+  padding: 40px 0;
+  background: var(--deep);
+  color: #e0e8e5;
+}
+
+.site-footer p {
+  font-size: 0.9rem;
+}
+
+/* Dos bloques en fila que se reacomodan si no hay espacio */
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.footer-grid a {
+  color: white;
+}
+
+
+/* ============================================================
+   13. VENTANA MODAL (ficha de detalle)
+   ============================================================ */
+.dialog {
+  width: 100%;
+  max-width: min(790px, calc(100% - 25px));
+  max-height: 90vh;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: white;
+  color: var(--ink);
+  box-shadow: 0 25px 75px #0006;
+}
+
+/* Fondo oscuro detrás de la ventana */
+.dialog::backdrop {
+  background: #092628ab;
+}
+
+.dialog-content {
+  padding: 28px;
+}
+
+/* Título a la izquierda, botón "×" a la derecha */
+.dialog-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 18px;
+}
+
+.close {
+  min-width: 40px;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+/* Datos de la ficha en dos columnas */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.detail {
+  padding: 13px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--canvas);
+  overflow-wrap: anywhere;  /* evita que URLs largas desborden la caja */
+}
+
+.detail strong {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--primary);
+  font-size: 0.79rem;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.detail span {
+  font-size: 0.91rem;
+  white-space: pre-wrap;  /* respeta los saltos de línea de los datos */
+}
+
+/* Botones de enlaces externos (mapa, fuente, fotos) */
+.detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+/* Bloque "Continúa tu recorrido" */
+.related {
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.related-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+/* ============================================================
+   14. DISEÑO RESPONSIVO (media queries)
+   Enfoque "escritorio primero": los estilos anteriores son para
+   pantallas grandes y aquí se ajustan para tablet y móvil.
+   ============================================================ */
+
+/* ---- Tablet (hasta 920px) ---- */
+@media (max-width: 920px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columnas */
+  }
+
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-inner {
+    gap: 22px;
+  }
+
+  .hero-art {
+    min-height: 240px;
+  }
+}
+
+/* ---- Móvil (hasta 680px) ---- */
+@media (max-width: 680px) {
+  .wrap {
+    padding: 0 17px;
+  }
+
+  /* Aparece el botón ☰ Menú */
+  .menu-toggle {
+    display: block;
+  }
+
+  /* La navegación se oculta y se convierte en un panel desplegable
+     en columna (flex-direction: column) bajo la cabecera */
+  .links {
+    display: none;
+    position: absolute;
+    top: 74px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 20px;
+    background: white;
+    box-shadow: 0 12px 16px #0002;
+  }
+
+  /* JavaScript agrega .open al pulsar el botón y el menú se muestra */
+  .links.open {
+    display: flex;
+  }
+
+  /* El hero pasa a una sola columna */
+  .hero-inner {
+    grid-template-columns: 1fr;
+    padding-top: 50px;
+    padding-bottom: 25px;
+  }
+
+  .hero-art {
+    min-height: 170px;
+    margin-top: 10px;
+  }
+
+  .tabs {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .section-head {
+    display: block;
+  }
+
+  /* Filtros, tarjetas y ficha en una sola columna */
+  .filters,
+  .cards,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dialog-content {
+    padding: 18px;
+  }
+
+  .footer-grid {
+    display: block;
+  }
+}
+
+
+/* ============================================================
+   15. MOVIMIENTO REDUCIDO
+   Respeta la configuración del sistema de usuarios sensibles
+   a las animaciones.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    transition: none !important;
+  }
+}

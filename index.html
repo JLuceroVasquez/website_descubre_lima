@@ -1,1 +1,170 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#11343a"><title>Rutas Locales · Descubre Lima</title><link rel="stylesheet" href="assets/estilos.css"></head><body><a class="skip" href="#main">Saltar al contenido</a><header class="site-header"><div class="wrap nav"><a class="brand" href="index.html"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rutas Locales · Lima</a><nav class="links" style="display:flex;flex-wrap:wrap"><a href="atractivos.html">Atractivos</a><a href="restaurantes.html">¿A dónde comer?</a><a href="eventos.html">Eventos</a></nav></div></header><main id="main"><section class="hero"><div class="wrap hero-inner"><div><p class="eyebrow">DESCUBRE LIMA METROPOLITANA</p><h1>Haz espacio para descubrir.</h1><p>Explora rincones históricos, experiencias gastronómicas y eventos en un mismo lugar. Elige un plan y consulta sus datos antes de salir.</p><a class="btn btn-accent" href="#secciones">Comenzar a explorar ↗</a></div><div class="hero-art" aria-hidden="true"><div class="pin one"><span>1</span></div><div class="pin two"><span>2</span></div><div class="pin three"><span>3</span></div></div></div></section><section class="wrap catalog" id="secciones"><p class="eyebrow" style="color:var(--terra)">TRES FORMAS DE RECORRER</p><h2>¿Qué te provoca descubrir hoy?</h2><p>172 registros referenciales organizados en tres secciones interactivas.</p><div class="cards" style="margin-top:28px"><article class="card"><div class="card-art"></div><div class="card-body"><div class="kicker">93 destinos</div><h3>Atractivos turísticos</h3><p>Historia, arquitectura, museos y espacios para recorrer.</p><div class="card-bottom"><a class="btn btn-primary" href="atractivos.html">Explorar atractivos ↗</a></div></div></article><article class="card"><div class="card-art food"></div><div class="card-body"><div class="kicker">43 restaurantes</div><h3>¿A dónde comer?</h3><p>Restaurantes, estilos de cocina y sabores de la ciudad.</p><div class="card-bottom"><a class="btn btn-primary" href="restaurantes.html">Descubrir sabores ↗</a></div></div></article><article class="card"><div class="card-art event"></div><div class="card-body"><div class="kicker">36 actividades</div><h3>Eventos en Lima</h3><p>Conciertos, cultura y encuentros. Revisa si las fechas siguen vigentes.</p><div class="card-bottom"><a class="btn btn-primary" href="eventos.html">Explorar eventos ↗</a></div></div></article></div><div class="notice" style="margin-top:35px"><strong>Antes de salir:</strong> Esta página utiliza el inventario referencial actualizado el 09/10/2026. Confirma en fuentes oficiales la información sujeta a cambios. Las ilustraciones son decorativas, no fotografías de establecimientos.</div></section></main><footer class="site-footer"><div class="wrap"><p>Rutas Locales · Lima Metropolitana · 2026</p><p>Desarrollado por Renzo Omar Villalta Castillo · Todos los derechos reservados</p></div></footer></body></html>
+<!doctype html>
+<!--
+  ============================================================
+  index.html · Portada de "Rutas Locales · Lima"
+  ------------------------------------------------------------
+  Este archivo SOLO contiene la estructura y el contenido.
+  - Los estilos están en assets/estilos.css (vinculado con <link>).
+  - El comportamiento está en assets/app.js (vinculado con <script>).
+  Estructura semántica de la página:
+    header  → logotipo y navegación principal
+    main    → hero (presentación) + catálogo de 3 secciones
+    footer  → créditos
+  ============================================================
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <!-- Viewport: necesario para que las media queries funcionen en móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#11343a">
+    <meta
+      name="description"
+      content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con fichas, filtros y enlaces a fuentes."
+    >
+    <title>Rutas Locales · Descubre Lima</title>
+
+    <!-- Hoja de estilos externa: todo el diseño visual del sitio -->
+    <link rel="stylesheet" href="assets/estilos.css">
+  </head>
+
+  <!-- data-section="inicio" le indica a app.js que esta es la portada -->
+  <body data-section="inicio">
+    <!-- Enlace de accesibilidad: permite saltar directo al contenido con el teclado -->
+    <a class="skip" href="#main">Saltar al contenido</a>
+
+    <!-- ================= CABECERA ================= -->
+    <header class="site-header">
+      <div class="wrap nav">
+        <!-- Logotipo: los 4 <i> se dibujan como cuadros con CSS Grid -->
+        <a class="brand" href="index.html" aria-label="Rutas Locales Lima, inicio">
+          <span class="logo" aria-hidden="true">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+          Rutas Locales <span class="brand-light">· Lima</span>
+        </a>
+
+        <!-- Botón del menú móvil: visible solo en pantallas pequeñas (ver media query) -->
+        <button
+          class="menu-toggle"
+          id="mobile-menu"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          ☰ Menú
+        </button>
+
+        <!-- Navegación principal: contenedor flexible (display: flex en .links) -->
+        <nav class="links" id="nav-links" aria-label="Navegación principal">
+          <a id="nav-inicio" href="index.html">Inicio</a>
+          <a id="nav-atractivos" href="atractivos.html">Atractivos</a>
+          <a id="nav-restaurantes" href="restaurantes.html">¿A dónde comer?</a>
+          <a id="nav-eventos" href="eventos.html">Eventos</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ================= CONTENIDO PRINCIPAL ================= -->
+    <main id="main">
+      <!-- HERO: dos columnas (texto + ilustración) organizadas con CSS Grid -->
+      <section class="hero">
+        <div class="wrap hero-inner">
+          <div>
+            <p class="eyebrow">Descubre Lima Metropolitana</p>
+            <h1>Haz espacio para descubrir.</h1>
+            <p>
+              Explora rincones históricos, experiencias gastronómicas y eventos
+              en un mismo lugar. Elige un plan y consulta sus datos antes de salir.
+            </p>
+            <a class="btn btn-accent" href="#secciones">Comenzar a explorar ↗</a>
+          </div>
+
+          <!-- Ilustración decorativa hecha solo con CSS (degradados y posicionamiento absoluto) -->
+          <div class="hero-art" aria-hidden="true">
+            <div class="pin one"><span>1</span></div>
+            <div class="pin two"><span>2</span></div>
+            <div class="pin three"><span>3</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATÁLOGO: tres tarjetas que llevan a cada sección del sitio -->
+      <section class="wrap catalog" id="secciones">
+        <p class="eyebrow eyebrow-terra">Tres formas de recorrer</p>
+        <h2>¿Qué te provoca descubrir hoy?</h2>
+        <p>
+          <!-- app.js reemplaza este número con el total real del inventario -->
+          <span id="home-total">172</span> registros referenciales organizados
+          en tres secciones interactivas.
+        </p>
+
+        <!-- Rejilla de tarjetas: 3 columnas en escritorio, 2 en tablet, 1 en móvil -->
+        <div class="cards cards-home">
+          <article class="card">
+            <div class="card-art"></div>
+            <div class="card-body">
+              <div class="kicker"><span id="home-count-atractivos">93</span> destinos</div>
+              <h3>Atractivos turísticos</h3>
+              <p>Historia, arquitectura, museos y espacios para recorrer.</p>
+              <div class="card-bottom">
+                <a class="btn btn-primary" href="atractivos.html">Explorar atractivos ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art food"></div>
+            <div class="card-body">
+              <div class="kicker"><span id="home-count-restaurantes">43</span> restaurantes</div>
+              <h3>¿A dónde comer?</h3>
+              <p>Restaurantes, estilos de cocina y sabores de la ciudad.</p>
+              <div class="card-bottom">
+                <a class="btn btn-primary" href="restaurantes.html">Descubrir sabores ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-art event"></div>
+            <div class="card-body">
+              <div class="kicker"><span id="home-count-eventos">36</span> actividades</div>
+              <h3>Eventos en Lima</h3>
+              <p>Conciertos, cultura y encuentros. Revisa si las fechas siguen vigentes.</p>
+              <div class="card-bottom">
+                <a class="btn btn-primary" href="eventos.html">Explorar eventos ↗</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Aviso informativo -->
+        <div class="notice notice-home" role="note">
+          <strong>Antes de salir:</strong> Esta página utiliza el inventario
+          referencial actualizado el 09/10/2026. Confirma en fuentes oficiales la
+          información sujeta a cambios. Las ilustraciones son decorativas, no
+          fotografías de establecimientos.
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= PIE DE PÁGINA ================= -->
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>Rutas Locales · Lima Metropolitana · 2026</p>
+        <p>Desarrollado por Renzo Omar Villalta Castillo · Todos los derechos reservados</p>
+      </div>
+    </footer>
+
+    <!--
+      Scripts al final del <body>: el HTML ya está cargado cuando se ejecutan.
+      1) datos.js define window.INVENTARIO (los 172 registros).
+      2) app.js usa esos datos para actualizar los contadores y activar el menú móvil.
+    -->
+    <script src="assets/datos.js"></script>
+    <script src="assets/app.js"></script>
+  </body>
+</html>
