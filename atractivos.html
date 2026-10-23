@@ -1,20 +1,20 @@
 <!doctype html>
 <!--
   ============================================================
-  atractivos.html · Sección "Atractivos turísticos" de "Rutas Locales · Lima"
+  atractivos.html · Sección "Atractivos turísticos" de "Rutas Limeñas"
   ------------------------------------------------------------
-  Las tres páginas de sección (atractivos, restaurantes, eventos)
-  comparten exactamente la misma estructura. Lo único que cambia es
-  el atributo data-section del <body>, que app.js lee para saber
-  qué datos mostrar y qué textos colocar.
+  Página estática: solo HTML5 y CSS3 (css/estilos.css).
+  Sin JavaScript ni frameworks externos.
 
-  Los elementos vacíos con id (hero-title, results, modal-fields…)
-  son "contenedores" que app.js rellena dinámicamente.
+  Las 9 tarjetas se escribieron directamente en el HTML con datos
+  del archivo inventario.json (93 registros en la sección).
+  Cómo funciona sin JavaScript:
+    - Filtros  → botones de opción (radio) + regla CSS :has()
+    - Enlaces  → cada tarjeta abre su ubicación en Google Maps
   Estructura:
-    header  → logotipo, botón de menú móvil y navegación
-    main    → hero + pestañas + filtros + tarjetas + paginación
-    footer  → créditos y enlaces
-    dialog  → ventana modal con la ficha completa de un registro
+    header  → logotipo, menú móvil y navegación
+    main    → hero ligero + filtros + 9 tarjetas con enlaces
+    footer  → nombre del sitio, descripción y autores
   ============================================================
 -->
 <html lang="es">
@@ -23,222 +23,331 @@
     <!-- Viewport: necesario para que las media queries funcionen en móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#11343a">
-    <meta
-      name="description"
-      content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con fichas, filtros y enlaces a fuentes."
-    >
-    <title>Atractivos turísticos | Rutas Locales Lima</title>
+    <meta name="description" content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con descripciones breves y enlaces a mapas.">
+    <title>Atractivos turísticos | Rutas Limeñas</title>
 
     <!-- Hoja de estilos externa: todo el diseño visual del sitio -->
-    <link rel="stylesheet" href="assets/estilos.css">
+    <link rel="stylesheet" href="css/estilos.css">
   </head>
 
-  <!-- data-section indica a app.js qué sección del inventario cargar -->
-  <body data-section="atractivos">
-    <!-- Enlace de accesibilidad: permite saltar directo al contenido con el teclado -->
+  <body>
+    <!-- Enlace de accesibilidad: salta directo al contenido con el teclado -->
     <a class="skip" href="#main">Saltar al contenido</a>
 
     <!-- ================= CABECERA ================= -->
     <header class="site-header">
       <div class="wrap nav">
         <!-- Logotipo: los 4 <i> se dibujan como cuadros con CSS Grid -->
-        <a class="brand" href="index.html" aria-label="Rutas Locales Lima, inicio">
+        <a class="brand" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
           <span class="logo" aria-hidden="true">
             <i></i>
             <i></i>
             <i></i>
             <i></i>
           </span>
-          Rutas Locales <span class="brand-light">· Lima</span>
+          Rutas Limeñas
         </a>
 
-        <!-- Botón del menú móvil: visible solo en pantallas pequeñas (ver media query) -->
-        <button
-          class="menu-toggle"
-          id="mobile-menu"
-          type="button"
-          aria-expanded="false"
-          aria-controls="nav-links"
-        >
-          ☰ Menú
-        </button>
+        <!--
+          Menú móvil sin JavaScript: la casilla guarda el estado
+          (marcada = abierto) y la etiqueta funciona como botón.
+          Ambos solo se muestran en pantallas pequeñas.
+        -->
+        <input class="menu-check" type="checkbox" id="menu-check" aria-controls="nav-links">
+        <label class="menu-toggle" for="menu-check">
+          <span aria-hidden="true">☰</span> Menú
+        </label>
 
-        <!-- Navegación principal. app.js marca con la clase .active el enlace de la página actual -->
+        <!-- Navegación principal: aria-current marca la página actual -->
         <nav class="links" id="nav-links" aria-label="Navegación principal">
-          <a id="nav-inicio" href="index.html">Inicio</a>
-          <a id="nav-atractivos" href="atractivos.html">Atractivos</a>
-          <a id="nav-restaurantes" href="restaurantes.html">¿A dónde comer?</a>
-          <a id="nav-eventos" href="eventos.html">Eventos</a>
+          <a href="index.html">Inicio</a>
+          <a href="atractivos.html" aria-current="page">Atractivos</a>
+          <a href="restaurantes.html">¿A dónde comer?</a>
+          <a href="eventos.html">Eventos</a>
         </nav>
       </div>
     </header>
 
     <!-- ================= CONTENIDO PRINCIPAL ================= -->
     <main id="main">
-      <!-- HERO: los textos se completan desde app.js según la sección -->
-      <section class="hero">
+      <!-- HERO LIGERO: título, texto y una sola foto de la sección (sin botón) -->
+      <section class="hero hero-ligero" aria-labelledby="hero-titulo">
         <div class="wrap hero-inner">
-          <div>
-            <p class="eyebrow" id="hero-eyebrow"></p>
-            <h1 id="hero-title"></h1>
-            <p id="hero-subtitle"></p>
-            <a class="btn btn-accent" href="#explorar">Explorar planes ↗</a>
+          <div class="hero-text">
+            <p class="eyebrow">Conoce Lima · Patrimonio y experiencias</p>
+            <h1 id="hero-titulo">Encuentra tu próximo paseo</h1>
+            <p>Patrimonio, cultura, naturaleza y lugares para descubrir en Lima Metropolitana.</p>
           </div>
 
-          <!-- Ilustración decorativa hecha solo con CSS -->
-          <div class="hero-art" aria-hidden="true">
-            <div class="pin one"><span>1</span></div>
-            <div class="pin two"><span>2</span></div>
-            <div class="pin three"><span>3</span></div>
+          <div class="hero-visual">
+            <figure class="hero-art hero-tile">
+              <img src="imagenes/miniaturas/atractivo_1.jpg" width="800" height="450" decoding="async"
+                   alt="Plaza Mayor de Lima con jardines, palmeras y la Catedral al fondo">
+              <figcaption>Atractivos</figcaption>
+            </figure>
           </div>
         </div>
       </section>
 
       <div class="wrap">
-        <!-- PESTAÑAS: acceso rápido a las tres secciones con su número de fichas -->
-        <nav class="tabs" aria-label="Explorar secciones">
-          <a class="tab" id="tab-atractivos" href="atractivos.html">
-            <span>🏛 Atractivos</span>
-            <b id="count-atractivos"></b>
-          </a>
-          <a class="tab" id="tab-restaurantes" href="restaurantes.html">
-            <span>🍽 ¿A dónde comer?</span>
-            <b id="count-restaurantes"></b>
-          </a>
-          <a class="tab" id="tab-eventos" href="eventos.html">
-            <span>🎭 Eventos</span>
-            <b id="count-eventos"></b>
-          </a>
-        </nav>
-
-        <!-- CATÁLOGO -->
-        <section class="catalog" id="explorar">
+        <!-- ================= CATÁLOGO ================= -->
+        <section class="catalog" id="explorar" aria-labelledby="titulo-seccion">
           <div class="section-head">
-            <div>
-              <p class="eyebrow eyebrow-terra">Encuentra tu próximo plan</p>
-              <h2 id="section-title"></h2>
-              <p id="section-description"></p>
-            </div>
-          </div>
-
-          <div class="notice" role="note">
-            <strong>Información referencial:</strong> Las fichas provienen del
-            inventario de octubre de 2026. Verifica horarios, tarifas,
-            accesibilidad y fechas en las fuentes enlazadas antes de salir. Las
-            ilustraciones no son fotografías de los lugares.
+            <p class="eyebrow">Encuentra tu próximo plan</p>
+            <h2 id="titulo-seccion">Atractivos turísticos</h2>
+            <p>Sumérgete en la historia y la cultura limeña. Utiliza los filtros para descubrir los espacios imperdibles de la ciudad.</p>
           </div>
 
           <!--
-            FORMULARIO DE FILTROS
-            Cada control tiene un id para que app.js lea su valor y escuche
-            sus eventos (input / change / click). Las opciones de los <select>
-            se generan a partir de los datos.
+            FILTROS SIN JAVASCRIPT
+            Cada <input type="radio"> va seguido de su <label>. En
+            estilos.css, ".catalog:has(#f-X:checked)" oculta las tarjetas
+            que no tienen la clase f-X. No es un <form>: no se envía nada.
           -->
-          <form class="filters" id="filter-form">
-            <div class="field">
-              <label for="search">Buscar un lugar o plan</label>
-              <input
-                id="search"
-                name="search"
-                type="search"
-                placeholder="Ej.: museo, ceviche, concierto"
-                autocomplete="off"
-              >
+          <fieldset class="filtros">
+            <legend>Filtrar por categoría</legend>
+            <input class="visualmente-oculto" type="radio" name="filtro" id="f-todos" checked>
+            <label for="f-todos">Todos (9)</label>
+            <input class="visualmente-oculto" type="radio" name="filtro" id="f-patrimonio">
+            <label for="f-patrimonio">Patrimonio histórico (7)</label>
+            <input class="visualmente-oculto" type="radio" name="filtro" id="f-museo">
+            <label for="f-museo">Museo / espacio cultural (2)</label>
+          </fieldset>
+
+          <!-- Rejilla de tarjetas: 3 columnas en escritorio, 2 en tablet y 1 en móvil -->
+          <div class="cards">
+          <!-- Tarjeta 1 · Plaza Mayor de Lima -->
+          <article class="card f-patrimonio" aria-labelledby="t-plaza-mayor-de-lima">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_1.jpg"
+                   srcset="imagenes/miniaturas/atractivo_1.jpg 800w, imagenes/grandes/atractivo_1.jpg 1200w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="450" loading="lazy" decoding="async"
+                   alt="Plaza Mayor de Lima con jardines, palmeras y la Catedral al fondo">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Lima · Patrimonio histórico</p>
+              <h3 id="t-plaza-mayor-de-lima">Plaza Mayor de Lima</h3>
+              <p>Plaza fundacional de Lima, de 1535, rodeada por la Catedral, el Palacio de Gobierno y el Palacio Municipal.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Plaza%20Mayor%20de%20Lima%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Plaza Mayor de Lima (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
             </div>
+          </article>
 
-            <div class="field">
-              <label for="district">Distrito</label>
-              <select id="district" name="district">
-                <option value="">Todos los distritos</option>
-              </select>
+          <!-- Tarjeta 2 · Catedral de Lima -->
+          <article class="card f-patrimonio" aria-labelledby="t-catedral-de-lima">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_2.jpg"
+                   srcset="imagenes/miniaturas/atractivo_2.jpg 800w, imagenes/grandes/atractivo_2.jpg 1005w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="815" loading="lazy" decoding="async"
+                   alt="Fachada de la Catedral de Lima con sus dos torres">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Lima · Patrimonio histórico</p>
+              <h3 id="t-catedral-de-lima">Catedral de Lima</h3>
+              <p>Catedral frente a la Plaza Mayor: alberga un museo de arte religioso y el mausoleo atribuido a Francisco Pizarro.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Catedral%20de%20Lima%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Catedral de Lima (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
             </div>
+          </article>
 
-            <div class="field">
-              <label id="category-label" for="category">Categoría / tipo</label>
-              <select id="category" name="category">
-                <option value="">Todas</option>
-              </select>
+          <!-- Tarjeta 3 · Palacio de Gobierno del Perú -->
+          <article class="card f-patrimonio" aria-labelledby="t-palacio-de-gobierno-del-peru">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_3.jpg"
+                   srcset="imagenes/miniaturas/atractivo_3.jpg 800w, imagenes/grandes/atractivo_3.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="534" loading="lazy" decoding="async"
+                   alt="Fachada del Palacio de Gobierno del Perú con la bandera nacional">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Lima · Patrimonio histórico</p>
+              <h3 id="t-palacio-de-gobierno-del-peru">Palacio de Gobierno del Perú</h3>
+              <p>Sede y residencia del presidente del Perú, en la Plaza Mayor; destaca por su fachada y su cambio de guardia.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Palacio%20de%20Gobierno%20del%20Per%C3%BA%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Palacio de Gobierno del Perú (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
             </div>
+          </article>
 
-            <button class="btn btn-light" id="clear" type="button">Limpiar</button>
-          </form>
+          <!-- Tarjeta 4 · Palacio Municipal de Lima -->
+          <article class="card f-patrimonio" aria-labelledby="t-palacio-municipal-de-lima">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_4.jpg"
+                   srcset="imagenes/miniaturas/atractivo_4.jpg 800w, imagenes/grandes/atractivo_4.jpg 1023w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="533" loading="lazy" decoding="async"
+                   alt="Palacio Municipal de Lima, edificio amarillo con balcones de madera">
+            </figure>
 
-          <!-- Línea informativa: cantidad de resultados y filtro de favoritos -->
-          <div class="meta-line">
-            <span id="result-count" aria-live="polite"></span>
-            <button class="toggle-favs" id="only-favs" type="button">☆ Ver favoritos</button>
+            <div class="card-body">
+              <p class="kicker">Lima · Patrimonio histórico</p>
+              <h3 id="t-palacio-municipal-de-lima">Palacio Municipal de Lima</h3>
+              <p>Sede de la Municipalidad de Lima, en la Plaza Mayor: edificio neocolonial de 1944 con balcones de madera.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Palacio%20Municipal%20de%20Lima%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Palacio Municipal de Lima (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 5 · Basílica y Convento de San Francisco -->
+          <article class="card f-patrimonio" aria-labelledby="t-basilica-y-convento-de-san-francisco">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_5.jpg"
+                   srcset="imagenes/miniaturas/atractivo_5.jpg 800w, imagenes/grandes/atractivo_5.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="512" loading="lazy" decoding="async"
+                   alt="Basílica y Convento de San Francisco frente a su plaza">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Lima · Patrimonio histórico</p>
+              <h3 id="t-basilica-y-convento-de-san-francisco">Basílica y Convento de San Francisco</h3>
+              <p>Conjunto barroco con claustros y biblioteca antigua, cuya construcción empezó en 1546; bajo el templo están las catacumbas.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Bas%C3%ADlica%20y%20Convento%20de%20San%20Francisco%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Basílica y Convento de San Francisco (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 6 · Catacumbas de San Francisco -->
+          <article class="card f-museo" aria-labelledby="t-catacumbas-de-san-francisco">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_6.jpg"
+                   srcset="imagenes/miniaturas/atractivo_6.jpg 800w, imagenes/grandes/atractivo_6.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="450" loading="lazy" decoding="async"
+                   alt="Galería subterránea de ladrillo iluminada en las Catacumbas de San Francisco">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Lima · Museo / espacio cultural</p>
+              <h3 id="t-catacumbas-de-san-francisco">Catacumbas de San Francisco</h3>
+              <p>Osarios bajo el convento de San Francisco con restos de unas 25.000 personas; hoy funcionan como museo.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Catacumbas%20de%20San%20Francisco%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Catacumbas de San Francisco (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 7 · Basílica y Convento de Santo Domingo -->
+          <article class="card f-patrimonio" aria-labelledby="t-basilica-y-convento-de-santo-domingo">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_7.jpg"
+                   srcset="imagenes/miniaturas/atractivo_7.jpg 800w, imagenes/grandes/atractivo_7.jpg 1232w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="533" loading="lazy" decoding="async"
+                   alt="Claustro con arcos y azulejos del Convento de Santo Domingo">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Lima · Patrimonio histórico</p>
+              <h3 id="t-basilica-y-convento-de-santo-domingo">Basílica y Convento de Santo Domingo</h3>
+              <p>Convento de 1535 donde reposan Santa Rosa de Lima, San Martín de Porres y San Juan Macías; destaca su campanario.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Bas%C3%ADlica%20y%20Convento%20de%20Santo%20Domingo%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Basílica y Convento de Santo Domingo (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 8 · Casa de la Literatura Peruana -->
+          <article class="card f-museo" aria-labelledby="t-casa-de-la-literatura-peruana">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_8.jpg"
+                   srcset="imagenes/miniaturas/atractivo_8.jpg 800w, imagenes/grandes/atractivo_8.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="534" loading="lazy" decoding="async"
+                   alt="Fachada de la Casa de la Literatura Peruana, antigua estación Desamparados">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Lima · Museo / espacio cultural</p>
+              <h3 id="t-casa-de-la-literatura-peruana">Casa de la Literatura Peruana</h3>
+              <p>Antigua estación de Desamparados (1912), hoy espacio cultural con biblioteca y sala de lectura dedicado a la literatura peruana.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Casa%20de%20la%20Literatura%20Peruana%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Casa de la Literatura Peruana (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 9 · Jirón de la Unión -->
+          <article class="card f-patrimonio" aria-labelledby="t-jiron-de-la-union">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_9.jpg"
+                   srcset="imagenes/miniaturas/atractivo_9.jpg 800w, imagenes/grandes/atractivo_9.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="450" loading="lazy" decoding="async"
+                   alt="Personas caminando por el Jirón de la Unión, calle peatonal del centro">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Lima · Patrimonio histórico</p>
+              <h3 id="t-jiron-de-la-union">Jirón de la Unión</h3>
+              <p>Calle peatonal del Centro Histórico que une la Plaza Mayor con la Plaza San Martín, con tiendas, cafés y arquitectura de época.</p>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Jir%C3%B3n%20de%20la%20Uni%C3%B3n%20Lima%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Jirón de la Unión (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
           </div>
 
-          <!-- Contenedor de tarjetas: app.js inserta aquí los resultados filtrados -->
-          <div class="cards" id="results" aria-label="Resultados del catálogo"></div>
-
-          <!-- Paginación: 12 tarjetas por página -->
-          <nav class="pages" aria-label="Paginación">
-            <button class="btn btn-light" id="prev" type="button">← Anterior</button>
-            <span id="page-label" aria-live="polite"></span>
-            <button class="btn btn-light" id="next" type="button">Siguiente →</button>
-          </nav>
         </section>
       </div>
     </main>
 
     <!-- ================= PIE DE PÁGINA ================= -->
-    <!-- .footer-grid es un contenedor flexible de dos columnas que se apilan en móvil -->
     <footer class="site-footer">
-      <div class="wrap footer-grid">
-        <div>
-          <a class="brand brand-footer" href="index.html">Rutas Locales · Lima</a>
-          <p>Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p>
-          <p>
-            Desarrollado por Renzo Omar Villalta Castillo<br>
-            Todos los derechos reservados · 2026
-          </p>
-        </div>
+      <!-- Composición centrada: marca, frase y, bajo una línea, el año y los autores -->
+      <div class="wrap footer-inner">
+        <a class="brand brand-footer" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
+          <span class="logo" aria-hidden="true">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+          Rutas Limeñas
+        </a>
+        <p class="footer-lema">Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p>
 
-        <div>
-          <strong>Explora</strong>
-          <p>
-            <a href="atractivos.html">Atractivos</a> ·
-            <a href="restaurantes.html">¿A dónde comer?</a> ·
-            <a href="eventos.html">Eventos</a>
-          </p>
-          <p>
-            Prototipo académico basado en inventario referencial.<br>
-            Las reservas, pagos y rutas calculadas no forman parte de esta versión.
-          </p>
-        </div>
+        <p class="footer-bottom">
+          © 2026 · Desarrollado por Jimmy Lucero, Jorge Hilasaca, Miguel Infante y Renzo Villalta
+        </p>
       </div>
     </footer>
-
-    <!--
-      VENTANA MODAL (<dialog>)
-      Se abre con showModal() desde app.js al pulsar "Ver ficha".
-      Sus contenedores (modal-title, modal-fields, …) se rellenan con
-      los datos del registro elegido.
-    -->
-    <dialog class="dialog" id="detail-modal" aria-labelledby="modal-title">
-      <div class="dialog-content">
-        <div class="dialog-top">
-          <div>
-            <div class="kicker" id="modal-kicker"></div>
-            <h2 id="modal-title"></h2>
-          </div>
-          <button class="close" id="modal-close" type="button" aria-label="Cerrar ficha">×</button>
-        </div>
-
-        <p id="modal-description"></p>
-        <div class="detail-grid" id="modal-fields"></div>
-        <div class="detail-links" id="modal-links"></div>
-        <div class="related" id="related"></div>
-      </div>
-    </dialog>
-
-    <!--
-      Scripts al final del <body>:
-      1) datos.js define window.INVENTARIO con los registros.
-      2) app.js construye la interfaz y responde a las acciones del usuario.
-    -->
-    <script src="assets/datos.js"></script>
-    <script src="assets/app.js"></script>
   </body>
 </html>

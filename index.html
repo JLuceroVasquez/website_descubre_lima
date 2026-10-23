@@ -1,15 +1,17 @@
 <!doctype html>
 <!--
   ============================================================
-  index.html · Portada de "Rutas Locales · Lima"
+  index.html · Portada de "Rutas Limeñas"
   ------------------------------------------------------------
-  Este archivo SOLO contiene la estructura y el contenido.
-  - Los estilos están en assets/estilos.css (vinculado con <link>).
-  - El comportamiento está en assets/app.js (vinculado con <script>).
+  Página estática: solo HTML5 y CSS3 (css/estilos.css).
+  Sin JavaScript ni frameworks externos.
   Estructura semántica de la página:
-    header  → logotipo y navegación principal
-    main    → hero (presentación) + catálogo de 3 secciones
-    footer  → créditos
+    header  → logotipo, menú móvil y navegación principal
+    main    → hero
+            → catálogo de 3 secciones (tarjetas)
+            → multimedia: <video> local y mapa con <iframe>
+            → formulario de sugerencias con validación nativa
+    footer  → nombre del sitio, descripción y autores
   ============================================================
 -->
 <html lang="es">
@@ -18,52 +20,47 @@
     <!-- Viewport: necesario para que las media queries funcionen en móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#11343a">
-    <meta
-      name="description"
-      content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con fichas, filtros y enlaces a fuentes."
-    >
-    <title>Rutas Locales · Descubre Lima</title>
+    <meta name="description" content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con descripciones breves y enlaces a mapas.">
+    <title>Rutas Limeñas</title>
 
     <!-- Hoja de estilos externa: todo el diseño visual del sitio -->
-    <link rel="stylesheet" href="assets/estilos.css">
+    <link rel="stylesheet" href="css/estilos.css">
   </head>
 
-  <!-- data-section="inicio" le indica a app.js que esta es la portada -->
-  <body data-section="inicio">
-    <!-- Enlace de accesibilidad: permite saltar directo al contenido con el teclado -->
+  <body>
+    <!-- Enlace de accesibilidad: salta directo al contenido con el teclado -->
     <a class="skip" href="#main">Saltar al contenido</a>
 
     <!-- ================= CABECERA ================= -->
     <header class="site-header">
       <div class="wrap nav">
         <!-- Logotipo: los 4 <i> se dibujan como cuadros con CSS Grid -->
-        <a class="brand" href="index.html" aria-label="Rutas Locales Lima, inicio">
+        <a class="brand" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
           <span class="logo" aria-hidden="true">
             <i></i>
             <i></i>
             <i></i>
             <i></i>
           </span>
-          Rutas Locales <span class="brand-light">· Lima</span>
+          Rutas Limeñas
         </a>
 
-        <!-- Botón del menú móvil: visible solo en pantallas pequeñas (ver media query) -->
-        <button
-          class="menu-toggle"
-          id="mobile-menu"
-          type="button"
-          aria-expanded="false"
-          aria-controls="nav-links"
-        >
-          ☰ Menú
-        </button>
+        <!--
+          Menú móvil sin JavaScript: la casilla guarda el estado
+          (marcada = abierto) y la etiqueta funciona como botón.
+          Ambos solo se muestran en pantallas pequeñas.
+        -->
+        <input class="menu-check" type="checkbox" id="menu-check" aria-controls="nav-links">
+        <label class="menu-toggle" for="menu-check">
+          <span aria-hidden="true">☰</span> Menú
+        </label>
 
-        <!-- Navegación principal: contenedor flexible (display: flex en .links) -->
+        <!-- Navegación principal: aria-current marca la página actual -->
         <nav class="links" id="nav-links" aria-label="Navegación principal">
-          <a id="nav-inicio" href="index.html">Inicio</a>
-          <a id="nav-atractivos" href="atractivos.html">Atractivos</a>
-          <a id="nav-restaurantes" href="restaurantes.html">¿A dónde comer?</a>
-          <a id="nav-eventos" href="eventos.html">Eventos</a>
+          <a href="index.html" aria-current="page">Inicio</a>
+          <a href="atractivos.html">Atractivos</a>
+          <a href="restaurantes.html">¿A dónde comer?</a>
+          <a href="eventos.html">Eventos</a>
         </nav>
       </div>
     </header>
@@ -71,100 +68,272 @@
     <!-- ================= CONTENIDO PRINCIPAL ================= -->
     <main id="main">
       <!-- HERO: dos columnas (texto + ilustración) organizadas con CSS Grid -->
-      <section class="hero">
+      <section class="hero" aria-labelledby="hero-titulo">
         <div class="wrap hero-inner">
-          <div>
+          <div class="hero-text">
             <p class="eyebrow">Descubre Lima Metropolitana</p>
-            <h1>Haz espacio para descubrir.</h1>
-            <p>
-              Explora rincones históricos, experiencias gastronómicas y eventos
-              en un mismo lugar. Elige un plan y consulta sus datos antes de salir.
-            </p>
-            <a class="btn btn-accent" href="#secciones">Comenzar a explorar ↗</a>
+            <h1 id="hero-titulo">Haz espacio para descubrir.</h1>
+            <p>Explora rincones históricos, experiencias gastronómicas y eventos en un mismo lugar. Elige un plan y consulta sus datos antes de salir.</p>
+            <a class="btn btn-accent" href="#secciones">Comenzar a explorar <span aria-hidden="true">↗</span></a>
           </div>
 
-          <!-- Ilustración decorativa hecha solo con CSS (degradados y posicionamiento absoluto) -->
-          <div class="hero-art" aria-hidden="true">
-            <div class="pin one"><span>1</span></div>
-            <div class="pin two"><span>2</span></div>
-            <div class="pin three"><span>3</span></div>
+          <!--
+            Mosaico de tres fotos (CSS Grid): una grande y dos apiladas.
+            Cada foto lleva un pin numerado y la etiqueta de su sección.
+          -->
+          <div class="hero-visual">
+            <div class="hero-art" role="group" aria-label="Vista previa de las tres secciones del sitio">
+              <figure class="hero-tile tile-1">
+                <img src="imagenes/miniaturas/atractivo_1.jpg" width="800" height="450" decoding="async"
+                     alt="Plaza Mayor de Lima con jardines, palmeras y la Catedral al fondo">
+                <figcaption><span class="pin pin-1" aria-hidden="true">1</span> Atractivos</figcaption>
+              </figure>
+              <figure class="hero-tile">
+                <img src="imagenes/miniaturas/restaurante_8.jpg" width="800" height="600" decoding="async"
+                     alt="Vista aérea de La Rosa Náutica, restaurante sobre un muelle en el mar de Lima">
+                <figcaption><span class="pin" aria-hidden="true">2</span> Sabores</figcaption>
+              </figure>
+              <figure class="hero-tile">
+                <img src="imagenes/miniaturas/evento_13.jpg" width="800" height="534" decoding="async"
+                     alt="Concierto con músicos en el escenario iluminado de azul y morado">
+                <figcaption><span class="pin" aria-hidden="true">3</span> Agenda</figcaption>
+              </figure>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- CATÁLOGO: tres tarjetas que llevan a cada sección del sitio -->
-      <section class="wrap catalog" id="secciones">
-        <p class="eyebrow eyebrow-terra">Tres formas de recorrer</p>
-        <h2>¿Qué te provoca descubrir hoy?</h2>
-        <p>
-          <!-- app.js reemplaza este número con el total real del inventario -->
-          <span id="home-total">172</span> registros referenciales organizados
-          en tres secciones interactivas.
-        </p>
+      <!-- ================= CATÁLOGO: TRES SECCIONES ================= -->
+      <section class="wrap catalog" id="secciones" aria-labelledby="titulo-secciones">
+        <p class="eyebrow">Tres formas de recorrer</p>
+        <h2 id="titulo-secciones">¿Qué plan te provoca hoy?</h2>
+        <p>Elige una sección y explora los lugares destacados de Lima Metropolitana.</p>
 
         <!-- Rejilla de tarjetas: 3 columnas en escritorio, 2 en tablet, 1 en móvil -->
-        <div class="cards cards-home">
-          <article class="card">
-            <div class="card-art"></div>
+        <div class="cards">
+          <article class="card" aria-labelledby="t-home-atractivos">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/atractivo_1.jpg"
+                   srcset="imagenes/miniaturas/atractivo_1.jpg 800w, imagenes/grandes/atractivo_1.jpg 1200w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="450" loading="lazy" decoding="async"
+                   alt="Plaza Mayor de Lima con jardines, palmeras y la Catedral al fondo">
+            </figure>
             <div class="card-body">
-              <div class="kicker"><span id="home-count-atractivos">93</span> destinos</div>
-              <h3>Atractivos turísticos</h3>
+              <h3 id="t-home-atractivos">Atractivos turísticos</h3>
               <p>Historia, arquitectura, museos y espacios para recorrer.</p>
               <div class="card-bottom">
-                <a class="btn btn-primary" href="atractivos.html">Explorar atractivos ↗</a>
+                <a class="btn btn-primary" href="atractivos.html">Explorar atractivos <span aria-hidden="true">↗</span></a>
               </div>
             </div>
           </article>
 
-          <article class="card">
-            <div class="card-art food"></div>
+          <article class="card" aria-labelledby="t-home-restaurantes">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/restaurante_8.jpg"
+                   srcset="imagenes/miniaturas/restaurante_8.jpg 800w, imagenes/grandes/restaurante_8.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="600" loading="lazy" decoding="async"
+                   alt="Vista aérea de La Rosa Náutica, restaurante sobre un muelle en el mar de Lima">
+            </figure>
             <div class="card-body">
-              <div class="kicker"><span id="home-count-restaurantes">43</span> restaurantes</div>
-              <h3>¿A dónde comer?</h3>
+              <h3 id="t-home-restaurantes">¿A dónde comer?</h3>
               <p>Restaurantes, estilos de cocina y sabores de la ciudad.</p>
               <div class="card-bottom">
-                <a class="btn btn-primary" href="restaurantes.html">Descubrir sabores ↗</a>
+                <a class="btn btn-primary" href="restaurantes.html">Descubrir sabores <span aria-hidden="true">↗</span></a>
               </div>
             </div>
           </article>
 
-          <article class="card">
-            <div class="card-art event"></div>
+          <article class="card" aria-labelledby="t-home-eventos">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_13.jpg"
+                   srcset="imagenes/miniaturas/evento_13.jpg 800w, imagenes/grandes/evento_13.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="534" loading="lazy" decoding="async"
+                   alt="Concierto con músicos en el escenario iluminado de azul y morado">
+            </figure>
             <div class="card-body">
-              <div class="kicker"><span id="home-count-eventos">36</span> actividades</div>
-              <h3>Eventos en Lima</h3>
+              <h3 id="t-home-eventos">Eventos en Lima</h3>
               <p>Conciertos, cultura y encuentros. Revisa si las fechas siguen vigentes.</p>
               <div class="card-bottom">
-                <a class="btn btn-primary" href="eventos.html">Explorar eventos ↗</a>
+                <a class="btn btn-primary" href="eventos.html">Explorar eventos <span aria-hidden="true">↗</span></a>
               </div>
             </div>
           </article>
         </div>
+      </section>
 
-        <!-- Aviso informativo -->
-        <div class="notice notice-home" role="note">
-          <strong>Antes de salir:</strong> Esta página utiliza el inventario
-          referencial actualizado el 09/10/2026. Confirma en fuentes oficiales la
-          información sujeta a cambios. Las ilustraciones son decorativas, no
-          fotografías de establecimientos.
+      <!-- ================= MULTIMEDIA: VIDEO Y MAPA ================= -->
+      <section class="wrap media" id="multimedia" aria-labelledby="titulo-multimedia">
+        <p class="eyebrow">Antes de salir</p>
+        <h2 id="titulo-multimedia">Lima en video y en el mapa</h2>
+
+        <!-- Dos bloques con Flexbox que se apilan en pantallas angostas -->
+        <div class="media-grid">
+          <!--
+            <video> con archivo local. controls muestra los botones del
+            navegador; preload="metadata" evita descargar todo el video al
+            abrir la página; poster es la imagen previa. (autoplay no se usa
+            para no reproducir contenido sin que la persona lo pida).
+          -->
+          <figure class="media-item">
+            <video controls preload="metadata" width="1280" height="720"
+                   poster="imagenes/miniaturas/atractivo_1.jpg"
+                   aria-describedby="video-descripcion">
+              <!-- El navegador usa el primer formato que pueda reproducir -->
+              <source src="multimedia/recorrido-centro-historico.mp4" type="video/mp4">
+              <source src="multimedia/recorrido-centro-historico.webm" type="video/webm">
+              <p>
+                Tu navegador no reproduce video HTML5.
+                <a href="multimedia/recorrido-centro-historico.mp4">Descarga el video</a>.
+              </p>
+            </video>
+            <figcaption id="video-descripcion">
+              <strong>Recorrido por el Centro Histórico</strong>
+              Video sin sonido de 32 segundos con las nueve fotografías de la
+              sección Atractivos: Plaza Mayor, Catedral, Palacio de Gobierno,
+              Palacio Municipal, San Francisco, sus catacumbas, Santo Domingo,
+              la Casa de la Literatura Peruana y el Jirón de la Unión.
+            </figcaption>
+          </figure>
+
+          <!-- <iframe> de Google Maps: integración de un recurso externo -->
+          <figure class="media-item">
+            <iframe src="https://www.google.com/maps?q=Plaza%20Mayor%20de%20Lima%20Lima%20Peru&amp;hl=es&amp;output=embed"
+                    title="Mapa del Centro Histórico de Lima alrededor de la Plaza Mayor"
+                    width="600" height="338" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <figcaption>
+              <strong>Punto de partida: Plaza Mayor de Lima</strong>
+              Los nueve atractivos destacados están a pocas cuadras de la Plaza
+              Mayor. Usa el mapa para ubicarte antes de iniciar el recorrido.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ================= FORMULARIO DE SUGERENCIAS ================= -->
+      <section class="sugerencias" id="sugerencias" aria-labelledby="titulo-sugerencias">
+        <div class="wrap">
+          <p class="eyebrow">Participa</p>
+          <h2 id="titulo-sugerencias">Sugiere un lugar para la próxima ruta</h2>
+          <p>Los campos marcados con * son obligatorios.</p>
+
+          <!--
+            Mensaje de confirmación: oculto con CSS hasta que la dirección
+            termina en #gracias. El formulario se envía a index.html#gracias,
+            por eso la pseudoclase :target lo muestra al volver a cargar.
+          -->
+          <div class="gracias" id="gracias" role="status" tabindex="-1">
+            <strong>¡Gracias por tu sugerencia!</strong>
+            El navegador comprobó que los campos están completos. Este sitio es
+            estático: no envía ni guarda tus datos en ningún servidor.
+          </div>
+
+          <!--
+            Validación nativa de HTML5: required, type="url", pattern, minlength y
+            maxlength. El navegador no permite enviar si algo falta.
+            method="get" y action a la misma página porque el sitio no tiene
+            servidor que reciba los datos.
+          -->
+          <form class="form" action="index.html#gracias" method="get" aria-describedby="nota-formulario">
+            <!-- 1. Nombre del lugar: el dato clave de la sugerencia -->
+            <div class="field ancho-completo">
+              <label for="lugar">Nombre del lugar *</label>
+              <input id="lugar" name="lugar" type="text" minlength="3" maxlength="120"
+                     placeholder="Ej.: Huaca Pucllana" required aria-describedby="ayuda-lugar">
+              <p class="hint" id="ayuda-lugar">Escríbelo como aparece en Google Maps.</p>
+            </div>
+
+            <!-- 2. Tipo de lugar: indica a qué sección se agregaría -->
+            <fieldset>
+              <legend>Tipo de lugar *</legend>
+              <div class="opciones">
+                <label><input type="radio" name="tipo" value="atractivo" required> Atractivo</label>
+                <label><input type="radio" name="tipo" value="restaurante"> Restaurante</label>
+                <label><input type="radio" name="tipo" value="evento"> Evento</label>
+              </div>
+            </fieldset>
+
+            <!-- 3. Distrito -->
+            <div class="field">
+              <label for="distrito">Distrito *</label>
+                <select id="distrito" name="distrito" required>
+                  <option value="">Elige un distrito</option>
+                  <option value="barranco">Barranco</option>
+                  <option value="chorrillos">Chorrillos</option>
+                  <option value="la-molina">La Molina</option>
+                  <option value="lima">Lima</option>
+                  <option value="lurin">Lurín</option>
+                  <option value="magdalena-del-mar">Magdalena del Mar</option>
+                  <option value="miraflores">Miraflores</option>
+                  <option value="pueblo-libre">Pueblo Libre</option>
+                  <option value="rimac">Rímac</option>
+                  <option value="san-borja">San Borja</option>
+                  <option value="san-isidro">San Isidro</option>
+                  <option value="san-miguel">San Miguel</option>
+                  <option value="santiago-de-surco">Santiago de Surco</option>
+                  <option value="surquillo">Surquillo</option>
+                </select>
+            </div>
+
+            <!--
+              4. Enlace de Google Maps (opcional). type="url" + pattern: el
+              navegador solo acepta enlaces de Google Maps (o vacío).
+            -->
+            <div class="field ancho-completo">
+              <label for="mapa">Enlace de Google Maps (opcional)</label>
+              <input id="mapa" name="mapa" type="url" inputmode="url" maxlength="300"
+                     placeholder="https://maps.app.goo.gl/..."
+                     pattern="https://(www\.)?(google\.[a-z.]+/maps|maps\.app\.goo\.gl|goo\.gl/maps).*"
+                     title="Pega un enlace de Google Maps, por ejemplo https://maps.app.goo.gl/..."
+                     aria-describedby="ayuda-mapa">
+              <p class="hint" id="ayuda-mapa">En Google Maps pulsa «Compartir» y pega el enlace aquí.</p>
+            </div>
+
+            <!-- 5. Motivo (opcional, una frase basta) -->
+            <div class="field ancho-completo">
+              <label for="mensaje">¿Por qué lo recomiendas? (opcional)</label>
+              <textarea id="mensaje" name="mensaje" rows="3" maxlength="300"
+                        placeholder="Una frase basta: qué lo hace especial"
+                        aria-describedby="ayuda-mensaje"></textarea>
+              <p class="hint" id="ayuda-mensaje">Máximo 300 caracteres.</p>
+            </div>
+
+            <p class="hint ancho-completo" id="nota-formulario">
+              Prototipo académico: al enviar, la página se vuelve a cargar y muestra
+              un mensaje de confirmación. No se guarda ningún dato.
+            </p>
+
+            <div class="form-actions ancho-completo">
+              <button class="btn btn-primary" type="submit">Enviar sugerencia</button>
+              <button class="btn btn-light" type="reset">Limpiar</button>
+            </div>
+          </form>
         </div>
       </section>
     </main>
 
     <!-- ================= PIE DE PÁGINA ================= -->
     <footer class="site-footer">
-      <div class="wrap">
-        <p>Rutas Locales · Lima Metropolitana · 2026</p>
-        <p>Desarrollado por Renzo Omar Villalta Castillo · Todos los derechos reservados</p>
+      <!-- Composición centrada: marca, frase y, bajo una línea, el año y los autores -->
+      <div class="wrap footer-inner">
+        <a class="brand brand-footer" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
+          <span class="logo" aria-hidden="true">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+          Rutas Limeñas
+        </a>
+        <p class="footer-lema">Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p>
+
+        <p class="footer-bottom">
+          © 2026 · Desarrollado por Jimmy Lucero, Jorge Hilasaca, Miguel Infante y Renzo Villalta
+        </p>
       </div>
     </footer>
-
-    <!--
-      Scripts al final del <body>: el HTML ya está cargado cuando se ejecutan.
-      1) datos.js define window.INVENTARIO (los 172 registros).
-      2) app.js usa esos datos para actualizar los contadores y activar el menú móvil.
-    -->
-    <script src="assets/datos.js"></script>
-    <script src="assets/app.js"></script>
   </body>
 </html>

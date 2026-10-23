@@ -1,0 +1,1098 @@
+/* ============================================================
+   estilos.css · Hoja de estilos única de "Rutas Limeñas"
+   ------------------------------------------------------------
+   Sitio construido solo con HTML5 y CSS3 estándar:
+   sin JavaScript, sin frameworks y sin bibliotecas externas.
+
+   Todo lo que en la versión anterior hacía JavaScript se
+   resuelve aquí con selectores y pseudoclases de CSS:
+     - Menú móvil       → casilla oculta + :checked
+     - Filtros          → botones de opción + :has() + :checked
+     - Página activa    → atributo aria-current="page"
+     - Aviso del form.  → :target y validación nativa del navegador
+
+   Índice
+     1.  Variables (paleta y medidas)
+     2.  Estilos base y tipografía
+     3.  Contenedor y utilidades de accesibilidad
+     4.  Cabecera y navegación            → Flexbox
+     5.  Menú móvil sin JavaScript         → :checked
+     6.  Hero (presentación de cada página) → Grid + position
+     7.  Botones
+     8.  Hero ligero (secciones)           → Grid
+     9.  Catálogo: encabezado y filtros
+     10. Tarjetas                          → Grid + Flexbox
+     11. Filtrado de tarjetas              → :has() + :checked
+     12. Multimedia: video y mapa          → Flexbox
+     13. Formulario de sugerencias
+     14. Pie de página
+     15. Diseño responsivo (media queries)
+     16. Compatibilidad y movimiento reducido
+   ============================================================ */
+
+
+/* ============================================================
+   1. VARIABLES
+   Propiedades personalizadas: cambiar un color aquí lo cambia
+   en todo el sitio.
+   ============================================================ */
+:root {
+  --deep: #11343a;      /* petróleo: fondos oscuros (hero, pie) */
+  --primary: #0f4c54;   /* color primario: botones y enlaces */
+  --terra: #aa4c2c;     /* terracota: acentos */
+  --ink: #162c32;       /* texto principal */
+  --canvas: #f8f6f1;    /* fondo general */
+  --mist: #ebf1ef;      /* fondos suaves */
+  --border: #d6ddda;    /* bordes */
+  --muted: #526467;     /* texto secundario */
+  --focus: #e6a65c;     /* contorno de foco del teclado */
+  --radius: 16px;       /* radio de esquinas habitual */
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+
+/* ============================================================
+   2. ESTILOS BASE Y TIPOGRAFÍA
+   ============================================================ */
+
+/* Modelo de caja: padding y borde se incluyen en el ancho */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Desplazamiento suave al seguir enlaces internos (#ancla) */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px; /* los anclajes no quedan bajo la cabecera fija */
+}
+
+body {
+  margin: 0;
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Las imágenes y el video nunca desbordan su contenedor.
+   height: auto conserva la proporción aunque el HTML declare
+   width y height (que solo sirven para reservar el espacio) */
+img,
+video,
+iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--primary);
+}
+
+/* Los controles de formulario heredan la tipografía del sitio */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Contorno visible al navegar con el teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Encabezados: misma familia sans-serif, más peso */
+h1,
+h2,
+h3 {
+  margin: 0 0 14px;
+  font-family: var(--font);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+/* clamp(mínimo, preferido, máximo): el tamaño se adapta a la ventana */
+h1 {
+  font-size: clamp(2.3rem, 5vw, 4.2rem);
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.35rem;
+}
+
+p {
+  margin: 0 0 16px;
+}
+
+
+/* ============================================================
+   3. CONTENEDOR Y UTILIDADES DE ACCESIBILIDAD
+   ============================================================ */
+
+/* .wrap centra el contenido y limita su ancho */
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Oculta un elemento a la vista pero lo deja disponible para
+   lectores de pantalla y para el teclado */
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Enlace "Saltar al contenido": aparece solo al recibir el foco */
+.skip {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  z-index: 200;
+  padding: 14px;
+  background-color: white;
+}
+
+.skip:focus {
+  left: 8px;
+}
+
+
+/* ============================================================
+   4. CABECERA Y NAVEGACIÓN (Flexbox)
+   ============================================================ */
+
+/* position: sticky → la cabecera queda arriba al hacer scroll */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: white;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 5px 20px rgb(17 52 58 / 0.04);
+}
+
+/* Fila flexible: logotipo a la izquierda, menú a la derecha */
+.nav {
+  position: relative; /* referencia del panel del menú móvil */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 74px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--deep);
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Logotipo: rejilla de 2 × 2 cuadros */
+.logo {
+  display: grid;
+  grid-template-columns: repeat(2, 9px);
+  gap: 3px;
+}
+
+.logo i {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background-color: var(--primary);
+}
+
+.logo i:nth-child(2),
+.logo i:nth-child(3) {
+  background-color: var(--terra);
+}
+
+/* Enlaces del menú en fila; flex-wrap permite saltar de línea */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.links a {
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 0.94rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+/* La página actual se marca en el HTML con aria-current="page"
+   (antes lo hacía JavaScript con la clase .active) */
+.links a:hover,
+.links a[aria-current="page"] {
+  background-color: var(--mist);
+  color: var(--primary);
+}
+
+
+/* ============================================================
+   5. MENÚ MÓVIL SIN JAVASCRIPT
+   Una casilla (input checkbox) guarda el estado abierto/cerrado.
+   La etiqueta <label> "☰ Menú" actúa como botón: al pulsarla se
+   marca la casilla y la regla ".menu-check:checked ~ .links"
+   muestra la navegación. En escritorio ambos se ocultan.
+   ============================================================ */
+.menu-check,
+.menu-toggle {
+  display: none;
+}
+
+.menu-toggle {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: white;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+/* Cuando la casilla recibe el foco del teclado, el contorno se
+   dibuja en la etiqueta visible */
+.menu-check:focus-visible + .menu-toggle {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Estado abierto: la etiqueta cambia de color */
+.menu-check:checked + .menu-toggle {
+  border-color: var(--primary);
+  background-color: var(--mist);
+}
+
+
+/* ============================================================
+   6. HERO (CSS Grid + posicionamiento)
+   ============================================================ */
+.hero {
+  overflow: hidden;
+  background-color: var(--deep);
+  color: white;
+}
+
+/* Dos columnas: texto e ilustración */
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  align-items: center;
+  gap: 40px;
+  min-height: 385px;
+  padding-top: 54px;
+  padding-bottom: 54px;
+}
+
+/* Entrada suave del texto (animación con @keyframes) */
+.hero-text {
+  animation: aparecer 0.6s ease-out both;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero p {
+  max-width: 56ch;
+  color: #e0e8e5;
+  font-size: 1.1rem;
+}
+
+/* Antetítulo en mayúsculas */
+.eyebrow {
+  margin-bottom: 18px;
+  color: var(--terra);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Sobre el fondo oscuro del hero el antetítulo es más claro.
+   ".hero .eyebrow" tiene más especificidad que ".hero p" */
+.hero .eyebrow {
+  color: #e4aa91;
+  font-size: 0.75rem;
+}
+
+/* Ilustración simplificada: un panel con degradado.
+   position: relative la vuelve referencia de los pines */
+/* Columna derecha del hero: mosaico de fotos */
+.hero-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Mosaico de fotos: 2 columnas y 2 filas; la primera foto ocupa las dos filas */
+.hero-art {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  height: 320px;
+}
+
+/* Cada foto es una "tarjeta" con esquinas redondeadas y sombra */
+.hero-tile {
+  position: relative;
+  margin: 0;
+  border: 3px solid rgb(255 255 255 / 0.14);
+  border-radius: 24px;
+  overflow: hidden;
+  background-color: var(--primary);
+  box-shadow: 0 14px 30px rgb(0 0 0 / 0.3);
+}
+
+.hero-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.hero-tile:hover img {
+  transform: scale(1.05);
+}
+
+.tile-1 {
+  grid-row: 1 / 3;
+}
+
+/* Etiqueta sobre la foto: pin numerado + nombre de la sección */
+.hero-tile figcaption {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px 5px 5px;
+  border-radius: 30px;
+  background-color: rgb(255 255 255 / 0.94);
+  color: var(--deep);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+/* Pin numerado (ahora dentro de la etiqueta, no flotando) */
+.pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.pin-1 {
+  background-color: var(--terra);
+}
+
+/* ============================================================
+   7. BOTONES
+   .btn es la base; .btn-primary, .btn-accent y .btn-light son
+   variantes de color; .small reduce el tamaño.
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #136571;
+}
+
+.btn-accent {
+  background-color: var(--terra);
+  color: white;
+}
+
+.btn-accent:hover {
+  background-color: #bf5a37;
+}
+
+.btn-light {
+  border-color: var(--primary);
+  background-color: white;
+  color: var(--primary);
+}
+
+.btn-light:hover {
+  background-color: var(--mist);
+}
+
+.btn.small {
+  min-height: 40px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+
+/* ============================================================
+   8. HERO LIGERO (páginas de sección)
+   Versión baja del hero: título, texto y una sola foto, sin botón.
+   Las pestañas se eliminaron: la navegación es solo el menú
+   del encabezado.
+   ============================================================ */
+.hero-ligero .hero-inner {
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
+  min-height: 0;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.hero-ligero h1 {
+  margin-bottom: 10px;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+}
+
+/* La figura ocupa toda la columna: una foto en lugar del mosaico */
+.hero-ligero .hero-art {
+  display: block;
+  height: 170px;
+}
+
+/* Etiqueta sin pin: solo el nombre de la sección */
+.hero-ligero .hero-tile figcaption {
+  padding: 6px 14px;
+}
+
+
+/* ============================================================
+   9. CATÁLOGO: ENCABEZADO Y FILTROS
+   ============================================================ */
+.catalog {
+  padding-top: 42px;
+  padding-bottom: 72px;
+}
+
+.section-head {
+  margin-bottom: 24px;
+}
+
+/* Sin ancho máximo: la introducción ocupa todo el ancho del contenedor */
+.section-head p:not(.eyebrow) {
+  color: var(--muted);
+}
+
+/* Grupo de filtros: <fieldset> con botones de opción (radio) */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: white;
+  box-shadow: 0 8px 30px rgb(22 58 57 / 0.04);
+}
+
+.filtros legend {
+  float: left;          /* coloca la leyenda dentro del recuadro */
+  width: 100%;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* La etiqueta de cada opción se ve como una "píldora" */
+.filtros label {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid #849995;
+  border-radius: 30px;
+  background-color: white;
+  font-size: 0.9rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.filtros label:hover {
+  background-color: var(--mist);
+}
+
+/* Opción elegida: el radio marcado colorea su etiqueta vecina */
+.filtros input:checked + label {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Foco del teclado visible sobre la etiqueta */
+.filtros input:focus-visible + label {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+
+/* ============================================================
+   10. TARJETAS (Grid para la rejilla, Flexbox en cada tarjeta)
+   ============================================================ */
+
+/* Rejilla de 3 columnas (2 en tablet, 1 en móvil) */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 26px;
+}
+
+/* Tarjeta: columna flexible con imagen arriba y cuerpo abajo */
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: white;
+  box-shadow: 0 12px 26px rgb(17 52 58 / 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px rgb(17 52 58 / 0.1);
+}
+
+/* Contenedor de la imagen: position relative para la etiqueta */
+.card-media {
+  position: relative;
+  height: 190px;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--mist);
+}
+
+/* object-fit: cover recorta la foto sin deformarla */
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Afiche vertical (evento con cartel): la tarjeta es horizontal, así que se
+   encuadra la zona de la esfera (sin texto cortado) en lugar del centro */
+.card-media.cartel img {
+  object-position: 50% 38%;
+}
+
+/* flex: 1 → el cuerpo ocupa el alto sobrante y los pies de todas
+   las tarjetas de una fila quedan alineados */
+.card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Antetítulo de la tarjeta: distrito · categoría */
+.kicker {
+  margin-bottom: 9px;
+  color: var(--terra);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #4a5d60;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+/* Datos rápidos como lista horizontal; margin-top: auto los
+   empuja al fondo de la tarjeta */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 12px 0 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 5px 10px;
+  border-radius: 30px;
+  background-color: var(--mist);
+  color: var(--primary);
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Pie de la tarjeta: enlaces "Sitio oficial" y "Ver en el mapa" a la derecha */
+.card-bottom {
+  display: flex;
+  flex-wrap: wrap; /* si no caben, los enlaces bajan a otra línea */
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+
+/* Tarjetas sin datos rápidos (atractivos y restaurantes): el pie se
+   empuja al fondo para que los botones de una fila queden alineados */
+.card-body:not(:has(.facts)) .card-bottom {
+  margin-top: auto;
+}
+
+.card-body:not(:has(.facts)) > p:last-of-type {
+  margin-bottom: 18px;
+}
+
+
+/* ============================================================
+   11. FILTRADO DE TARJETAS (:has + :checked)
+   Si el catálogo "tiene" marcado el radio #f-X, se ocultan las
+   tarjetas que no llevan la clase .f-X. La opción "Todos" no
+   tiene regla, por eso muestra todas las tarjetas.
+   ============================================================ */
+
+/* Atractivos: por categoría */
+.catalog:has(#f-patrimonio:checked) .card:not(.f-patrimonio),
+.catalog:has(#f-museo:checked) .card:not(.f-museo),
+
+/* Restaurantes y eventos: por distrito */
+.catalog:has(#f-barranco:checked) .card:not(.f-barranco),
+.catalog:has(#f-miraflores:checked) .card:not(.f-miraflores),
+.catalog:has(#f-san-isidro:checked) .card:not(.f-san-isidro),
+.catalog:has(#f-la-molina:checked) .card:not(.f-la-molina),
+.catalog:has(#f-lima:checked) .card:not(.f-lima),
+.catalog:has(#f-pueblo-libre:checked) .card:not(.f-pueblo-libre),
+.catalog:has(#f-surquillo:checked) .card:not(.f-surquillo),
+.catalog:has(#f-san-borja:checked) .card:not(.f-san-borja) {
+  display: none;
+}
+
+
+/* ============================================================
+   12. MULTIMEDIA: VIDEO Y MAPA (Flexbox)
+   ============================================================ */
+.media {
+  padding: 10px 0 60px;
+}
+
+/* Dos bloques que se reparten el ancho y se apilan si no caben */
+.media-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.media-item {
+  flex: 1 1 420px;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: white;
+}
+
+.media-item video,
+.media-item iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 12px;
+  background-color: var(--deep);
+}
+
+.media-item figcaption {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.media-item figcaption strong {
+  display: block;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+
+/* ============================================================
+   13. FORMULARIO DE SUGERENCIAS
+   La validación la hace el navegador con los atributos
+   required, type="email", minlength y maxlength.
+   ============================================================ */
+.sugerencias {
+  padding: 50px 0 70px;
+  border-top: 1px solid var(--border);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: white;
+}
+
+/* Bloques que ocupan las dos columnas */
+.form .ancho-completo {
+  grid-column: 1 / -1;
+}
+
+.form fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.form legend {
+  padding: 0 6px;
+  font-weight: 750;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.field + .field,
+.opciones + .field {
+  margin-top: 14px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #849995;
+  border-radius: 9px;
+  background-color: white;
+  color: var(--ink);
+}
+
+.field textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+/* Grupo de radios o casillas en fila */
+.opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+}
+
+.opciones label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* accent-color tiñe radios y casillas con el color del sitio */
+.form input[type="radio"],
+.form input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+/* Texto de ayuda bajo un campo */
+.hint {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Campo inválido después de que el usuario interactúa con él */
+.field input:user-invalid,
+.field select:user-invalid,
+.field textarea:user-invalid {
+  border-color: #b3261e;
+  background-color: #fdf1f0;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Mensaje tras enviar: oculto hasta que la URL termina en #gracias
+   (el formulario se envía a index.html#gracias y :target lo muestra) */
+.gracias {
+  display: none;
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  background-color: var(--mist);
+}
+
+.gracias:target {
+  display: block;
+}
+
+
+/* ============================================================
+   14. PIE DE PÁGINA
+   Composición centrada: marca + frase arriba; año y autores
+   abajo, separados por una línea fina.
+   ============================================================ */
+.site-footer {
+  padding: 52px 0 30px;
+  background-color: var(--deep);
+  color: #e0e8e5;
+  text-align: center;
+}
+
+.site-footer a {
+  color: white;
+}
+
+/* Contenedor en columna: todo queda en el eje central */
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Marca más grande que en el encabezado: es el cierre de la página */
+.brand-footer {
+  gap: 14px;
+  color: white;
+  font-size: 1.6rem;
+}
+
+.brand-footer .logo {
+  grid-template-columns: repeat(2, 12px);
+  gap: 4px;
+}
+
+.brand-footer .logo i {
+  width: 12px;
+  height: 12px;
+}
+
+/* Sobre el fondo oscuro, el petróleo del logo se aclara para que se vea */
+.brand-footer .logo i:nth-child(1),
+.brand-footer .logo i:nth-child(4) {
+  background-color: #7fb3a8;
+}
+
+/* Frase descriptiva: tamaño de lectura cómodo y ancho limitado */
+.site-footer .footer-lema {
+  max-width: 62ch;
+  margin: 14px 0 0;
+  color: #e0e8e5;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Año y autores: texto secundario bajo una línea fina a todo lo ancho */
+.site-footer .footer-bottom {
+  align-self: stretch;
+  margin: 32px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgb(255 255 255 / 0.15);
+  color: rgb(224 232 229 / 0.75);
+  font-size: 0.88rem;
+}
+
+
+/* ============================================================
+   15. DISEÑO RESPONSIVO (media queries)
+   Escritorio primero: los estilos anteriores son para pantallas
+   grandes; aquí se ajustan para tablet y móvil.
+   ============================================================ */
+
+/* ---- Tablet (hasta 920px) ---- */
+@media (max-width: 920px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-inner {
+    gap: 22px;
+  }
+
+  .hero-art {
+    height: 260px;
+  }
+}
+
+/* ---- Móvil (hasta 680px) ---- */
+@media (max-width: 680px) {
+  .wrap {
+    padding: 0 17px;
+  }
+
+  /* La casilla queda oculta a la vista pero sigue recibiendo
+     el foco del teclado; la etiqueta "☰ Menú" se muestra */
+  .menu-check {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  /* La navegación se vuelve un panel desplegable en columna */
+  .links {
+    display: none;
+    position: absolute;
+    top: 74px;
+    left: -17px;
+    right: -17px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 20px;
+    background-color: white;
+    box-shadow: 0 12px 16px rgb(0 0 0 / 0.12);
+  }
+
+  /* Casilla marcada → menú visible */
+  .menu-check:checked ~ .links {
+    display: flex;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding-top: 44px;
+    padding-bottom: 28px;
+  }
+
+  .hero-art {
+    height: 230px;
+  }
+
+  /* Una columna: el selector con .hero-ligero tiene más especificidad
+     que la regla general de .hero-inner, por eso se repite aquí */
+  .hero-ligero .hero-inner {
+    grid-template-columns: 1fr;
+    padding-top: 30px;
+    padding-bottom: 22px;
+  }
+
+  .hero-ligero .hero-art {
+    height: 170px;
+  }
+
+  .cards,
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros,
+  .form {
+    padding: 16px;
+  }
+
+
+}
+
+
+/* ============================================================
+   16. COMPATIBILIDAD Y MOVIMIENTO REDUCIDO
+   ============================================================ */
+
+/* Respeta a quienes desactivan las animaciones en su sistema */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,20 +1,20 @@
 <!doctype html>
 <!--
   ============================================================
-  eventos.html · Sección "Eventos en Lima" de "Rutas Locales · Lima"
+  eventos.html · Sección "Eventos en Lima" de "Rutas Limeñas"
   ------------------------------------------------------------
-  Las tres páginas de sección (atractivos, restaurantes, eventos)
-  comparten exactamente la misma estructura. Lo único que cambia es
-  el atributo data-section del <body>, que app.js lee para saber
-  qué datos mostrar y qué textos colocar.
+  Página estática: solo HTML5 y CSS3 (css/estilos.css).
+  Sin JavaScript ni frameworks externos.
 
-  Los elementos vacíos con id (hero-title, results, modal-fields…)
-  son "contenedores" que app.js rellena dinámicamente.
+  Las 9 tarjetas se escribieron directamente en el HTML con datos
+  del archivo inventario.json (36 registros en la sección).
+  Cómo funciona sin JavaScript:
+    - Filtros  → botones de opción (radio) + regla CSS :has()
+    - Enlaces  → cada tarjeta abre su ubicación en Google Maps
   Estructura:
-    header  → logotipo, botón de menú móvil y navegación
-    main    → hero + pestañas + filtros + tarjetas + paginación
-    footer  → créditos y enlaces
-    dialog  → ventana modal con la ficha completa de un registro
+    header  → logotipo, menú móvil y navegación
+    main    → hero ligero + filtros + 9 tarjetas con enlaces
+    footer  → nombre del sitio, descripción y autores
   ============================================================
 -->
 <html lang="es">
@@ -23,222 +23,396 @@
     <!-- Viewport: necesario para que las media queries funcionen en móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#11343a">
-    <meta
-      name="description"
-      content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con fichas, filtros y enlaces a fuentes."
-    >
-    <title>Eventos en Lima | Rutas Locales Lima</title>
+    <meta name="description" content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con descripciones breves y enlaces a mapas.">
+    <title>Eventos en Lima | Rutas Limeñas</title>
 
     <!-- Hoja de estilos externa: todo el diseño visual del sitio -->
-    <link rel="stylesheet" href="assets/estilos.css">
+    <link rel="stylesheet" href="css/estilos.css">
   </head>
 
-  <!-- data-section indica a app.js qué sección del inventario cargar -->
-  <body data-section="eventos">
-    <!-- Enlace de accesibilidad: permite saltar directo al contenido con el teclado -->
+  <body>
+    <!-- Enlace de accesibilidad: salta directo al contenido con el teclado -->
     <a class="skip" href="#main">Saltar al contenido</a>
 
     <!-- ================= CABECERA ================= -->
     <header class="site-header">
       <div class="wrap nav">
         <!-- Logotipo: los 4 <i> se dibujan como cuadros con CSS Grid -->
-        <a class="brand" href="index.html" aria-label="Rutas Locales Lima, inicio">
+        <a class="brand" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
           <span class="logo" aria-hidden="true">
             <i></i>
             <i></i>
             <i></i>
             <i></i>
           </span>
-          Rutas Locales <span class="brand-light">· Lima</span>
+          Rutas Limeñas
         </a>
 
-        <!-- Botón del menú móvil: visible solo en pantallas pequeñas (ver media query) -->
-        <button
-          class="menu-toggle"
-          id="mobile-menu"
-          type="button"
-          aria-expanded="false"
-          aria-controls="nav-links"
-        >
-          ☰ Menú
-        </button>
+        <!--
+          Menú móvil sin JavaScript: la casilla guarda el estado
+          (marcada = abierto) y la etiqueta funciona como botón.
+          Ambos solo se muestran en pantallas pequeñas.
+        -->
+        <input class="menu-check" type="checkbox" id="menu-check" aria-controls="nav-links">
+        <label class="menu-toggle" for="menu-check">
+          <span aria-hidden="true">☰</span> Menú
+        </label>
 
-        <!-- Navegación principal. app.js marca con la clase .active el enlace de la página actual -->
+        <!-- Navegación principal: aria-current marca la página actual -->
         <nav class="links" id="nav-links" aria-label="Navegación principal">
-          <a id="nav-inicio" href="index.html">Inicio</a>
-          <a id="nav-atractivos" href="atractivos.html">Atractivos</a>
-          <a id="nav-restaurantes" href="restaurantes.html">¿A dónde comer?</a>
-          <a id="nav-eventos" href="eventos.html">Eventos</a>
+          <a href="index.html">Inicio</a>
+          <a href="atractivos.html">Atractivos</a>
+          <a href="restaurantes.html">¿A dónde comer?</a>
+          <a href="eventos.html" aria-current="page">Eventos</a>
         </nav>
       </div>
     </header>
 
     <!-- ================= CONTENIDO PRINCIPAL ================= -->
     <main id="main">
-      <!-- HERO: los textos se completan desde app.js según la sección -->
-      <section class="hero">
+      <!-- HERO LIGERO: título, texto y una sola foto de la sección (sin botón) -->
+      <section class="hero hero-ligero" aria-labelledby="hero-titulo">
         <div class="wrap hero-inner">
-          <div>
-            <p class="eyebrow" id="hero-eyebrow"></p>
-            <h1 id="hero-title"></h1>
-            <p id="hero-subtitle"></p>
-            <a class="btn btn-accent" href="#explorar">Explorar planes ↗</a>
+          <div class="hero-text">
+            <p class="eyebrow">Lima en movimiento · Agenda</p>
+            <h1 id="hero-titulo">Planes para tu agenda</h1>
+            <p>Cartelera cultural y encuentros para organizar tus próximos planes. Confirma fechas antes de acudir.</p>
           </div>
 
-          <!-- Ilustración decorativa hecha solo con CSS -->
-          <div class="hero-art" aria-hidden="true">
-            <div class="pin one"><span>1</span></div>
-            <div class="pin two"><span>2</span></div>
-            <div class="pin three"><span>3</span></div>
+          <div class="hero-visual">
+            <figure class="hero-art hero-tile">
+              <img src="imagenes/miniaturas/evento_13.jpg" width="800" height="534" decoding="async"
+                   alt="Concierto con músicos en el escenario iluminado de azul y morado">
+              <figcaption>Agenda</figcaption>
+            </figure>
           </div>
         </div>
       </section>
 
       <div class="wrap">
-        <!-- PESTAÑAS: acceso rápido a las tres secciones con su número de fichas -->
-        <nav class="tabs" aria-label="Explorar secciones">
-          <a class="tab" id="tab-atractivos" href="atractivos.html">
-            <span>🏛 Atractivos</span>
-            <b id="count-atractivos"></b>
-          </a>
-          <a class="tab" id="tab-restaurantes" href="restaurantes.html">
-            <span>🍽 ¿A dónde comer?</span>
-            <b id="count-restaurantes"></b>
-          </a>
-          <a class="tab" id="tab-eventos" href="eventos.html">
-            <span>🎭 Eventos</span>
-            <b id="count-eventos"></b>
-          </a>
-        </nav>
-
-        <!-- CATÁLOGO -->
-        <section class="catalog" id="explorar">
+        <!-- ================= CATÁLOGO ================= -->
+        <section class="catalog" id="explorar" aria-labelledby="titulo-seccion">
           <div class="section-head">
-            <div>
-              <p class="eyebrow eyebrow-terra">Encuentra tu próximo plan</p>
-              <h2 id="section-title"></h2>
-              <p id="section-description"></p>
-            </div>
-          </div>
-
-          <div class="notice" role="note">
-            <strong>Información referencial:</strong> Las fichas provienen del
-            inventario de octubre de 2026. Verifica horarios, tarifas,
-            accesibilidad y fechas en las fuentes enlazadas antes de salir. Las
-            ilustraciones no son fotografías de los lugares.
+            <p class="eyebrow">Encuentra tu próximo plan</p>
+            <h2 id="titulo-seccion">Eventos en Lima</h2>
+            <p>Explora la cartelera cultural y los encuentros de la temporada. Filtra por distrito y organiza tus próximos planes.</p>
           </div>
 
           <!--
-            FORMULARIO DE FILTROS
-            Cada control tiene un id para que app.js lea su valor y escuche
-            sus eventos (input / change / click). Las opciones de los <select>
-            se generan a partir de los datos.
+            FILTROS SIN JAVASCRIPT
+            Cada <input type="radio"> va seguido de su <label>. En
+            estilos.css, ".catalog:has(#f-X:checked)" oculta las tarjetas
+            que no tienen la clase f-X. No es un <form>: no se envía nada.
           -->
-          <form class="filters" id="filter-form">
-            <div class="field">
-              <label for="search">Buscar un lugar o plan</label>
-              <input
-                id="search"
-                name="search"
-                type="search"
-                placeholder="Ej.: museo, ceviche, concierto"
-                autocomplete="off"
-              >
+          <fieldset class="filtros">
+            <legend>Filtrar por distrito</legend>
+            <input class="visualmente-oculto" type="radio" name="filtro" id="f-todos" checked>
+            <label for="f-todos">Todos (9)</label>
+            <input class="visualmente-oculto" type="radio" name="filtro" id="f-miraflores">
+            <label for="f-miraflores">Miraflores (4)</label>
+            <input class="visualmente-oculto" type="radio" name="filtro" id="f-barranco">
+            <label for="f-barranco">Barranco (2)</label>
+            <input class="visualmente-oculto" type="radio" name="filtro" id="f-san-borja">
+            <label for="f-san-borja">San Borja (3)</label>
+          </fieldset>
+
+          <!-- Rejilla de tarjetas: 3 columnas en escritorio, 2 en tablet y 1 en móvil -->
+          <div class="cards">
+          <!-- Tarjeta 1 · Historias de piedra: el arte de hacer brillar el ónix peruano -->
+          <article class="card f-miraflores" aria-labelledby="t-historias-de-piedra-el-arte-de-hacer-brillar-el-onix-peruano">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_31.jpg"
+                   srcset="imagenes/miniaturas/evento_31.jpg 736w, imagenes/grandes/evento_31.jpg 736w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="736" height="488" loading="lazy" decoding="async"
+                   alt="Fachada del Centro Cultural Ricardo Palma en Miraflores, con letreros de biblioteca, danza, música, arte y cine">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Miraflores · Centro Cultural Ricardo Palma</p>
+              <h3 id="t-historias-de-piedra-el-arte-de-hacer-brillar-el-onix-peruano">Historias de piedra: el arte de hacer brillar el ónix peruano</h3>
+              <p>Obras en ónix peruano del escultor Alfredo Rolando Grosman, que juegan con la luz, las transparencias y la piedra en bruto.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="09/10/2026">09/10/2026</li>
+                <li class="chip" title="Gratuito">Gratuito</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Centro%20Cultural%20Ricardo%20Palma%20Miraflores%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Historias de piedra: el arte de hacer brillar el ónix peruano (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
             </div>
+          </article>
 
-            <div class="field">
-              <label for="district">Distrito</label>
-              <select id="district" name="district">
-                <option value="">Todos los distritos</option>
-              </select>
+          <!-- Tarjeta 2 · Como un río que brilla -->
+          <article class="card f-barranco" aria-labelledby="t-como-un-rio-que-brilla">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_35.jpg"
+                   srcset="imagenes/miniaturas/evento_35.jpg 800w, imagenes/grandes/evento_35.jpg 1067w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="1200" loading="lazy" decoding="async"
+                   alt="Mural colorido en una calle de Barranco con un Volkswagen escarabajo estacionado">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Barranco · Crisis Galería</p>
+              <h3 id="t-como-un-rio-que-brilla">Como un río que brilla</h3>
+              <p>Exposición en Crisis Galería, en Barranco, con entrada libre. Confirma artista y horarios en la galería.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="09/10/2026">09/10/2026</li>
+                <li class="chip" title="Gratuito">Gratuito</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Crisis%20Galer%C3%ADa%20Barranco%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Como un río que brilla (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
             </div>
+          </article>
 
-            <div class="field">
-              <label id="category-label" for="category">Categoría / tipo</label>
-              <select id="category" name="category">
-                <option value="">Todas</option>
-              </select>
+          <!-- Tarjeta 3 · La posibilidad latente de una erupción -->
+          <article class="card f-barranco" aria-labelledby="t-la-posibilidad-latente-de-una-erupcion">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_36.jpg"
+                   srcset="imagenes/miniaturas/evento_36.jpg 800w, imagenes/grandes/evento_36.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="600" loading="lazy" decoding="async"
+                   alt="Mural de un gato y grafitis junto a unas escaleras en Barranco">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Barranco · Galería ODERS</p>
+              <h3 id="t-la-posibilidad-latente-de-una-erupcion">La posibilidad latente de una erupción</h3>
+              <p>Jimena Mía usa el volcán como metáfora del cuerpo y la tierra, en tres momentos: acumulación, erupción y reposo.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="09/10/2026">09/10/2026</li>
+                <li class="chip" title="Gratuito">Gratuito</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Galer%C3%ADa%20ODERS%20Barranco%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: La posibilidad latente de una erupción (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
             </div>
+          </article>
 
-            <button class="btn btn-light" id="clear" type="button">Limpiar</button>
-          </form>
+          <!-- Tarjeta 4 · Pulse. Ecos del Latido: Biometría, Cosmos y Ritmo -->
+          <article class="card f-miraflores" aria-labelledby="t-pulse-ecos-del-latido-biometria-cosmos-y-ritmo">
+            <figure class="card-media cartel">
+              <img src="imagenes/miniaturas/evento_32.jpg"
+                   srcset="imagenes/miniaturas/evento_32.jpg 800w, imagenes/grandes/evento_32.jpg 1024w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="1000" loading="lazy" decoding="async"
+                   alt="Afiche de Pulse con una esfera de cristal sobre una nebulosa, la fecha y los nombres de los artistas">
+            </figure>
 
-          <!-- Línea informativa: cantidad de resultados y filtro de favoritos -->
-          <div class="meta-line">
-            <span id="result-count" aria-live="polite"></span>
-            <button class="toggle-favs" id="only-favs" type="button">☆ Ver favoritos</button>
+            <div class="card-body">
+              <p class="kicker">Miraflores · Casa Garbo</p>
+              <h3 id="t-pulse-ecos-del-latido-biometria-cosmos-y-ritmo">Pulse. Ecos del Latido: Biometría, Cosmos y Ritmo</h3>
+              <p>Exposición en Casa Garbo con Gracia Teruya, Violeta Villa, Álvaro de la Puente, Rocío Pozo y Bárbara Ilse; curaduría de Martín Yépez.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="09/10/2026">09/10/2026</li>
+                <li class="chip" title="Gratuito">Gratuito</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Casa%20Garbo%20Miraflores%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Pulse. Ecos del Latido: Biometría, Cosmos y Ritmo (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 5 · Lo Nunca Visto -->
+          <article class="card f-miraflores" aria-labelledby="t-lo-nunca-visto">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_33.jpg"
+                   srcset="imagenes/miniaturas/evento_33.jpg 800w, imagenes/grandes/evento_33.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="600" loading="lazy" decoding="async"
+                   alt="Estructura roja frente a la cartelera del Teatro Julieta">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Miraflores · Nuevo Teatro Julieta</p>
+              <h3 id="t-lo-nunca-visto">Lo Nunca Visto</h3>
+              <p>Comedia dramática: una exprofesora de danza reúne a dos exalumnas para salvar su escuela y crear un espectáculo.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="09/10/2026">09/10/2026</li>
+                <li class="chip" title="S/ 35–65">S/ 35–65</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Nuevo%20Teatro%20Julieta%20Miraflores%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Lo Nunca Visto (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 6 · Las Aulas Celestes de Mariana de Althaus -->
+          <article class="card f-miraflores" aria-labelledby="t-las-aulas-celestes-de-mariana-de-althaus">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_34.jpg"
+                   srcset="imagenes/miniaturas/evento_34.jpg 800w, imagenes/grandes/evento_34.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="600" loading="lazy" decoding="async"
+                   alt="Personas reunidas bajo los arcos de la Alianza Francesa de Miraflores">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">Miraflores · Teatro Alianza Francesa</p>
+              <h3 id="t-las-aulas-celestes-de-mariana-de-althaus">Las Aulas Celestes de Mariana de Althaus</h3>
+              <p>Mariana de Althaus adapta «El principio del mundo», de Jeremías Gamboa: dos excompañeros de colegio se reencuentran.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="09/10/2026">09/10/2026</li>
+                <li class="chip" title="S/ 35–50">S/ 35–50</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Teatro%20Alianza%20Francesa%20Miraflores%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Las Aulas Celestes de Mariana de Althaus (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 7 · Tania Libertad -->
+          <article class="card f-san-borja" aria-labelledby="t-tania-libertad">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_13.jpg"
+                   srcset="imagenes/miniaturas/evento_13.jpg 800w, imagenes/grandes/evento_13.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="534" loading="lazy" decoding="async"
+                   alt="Concierto con músicos en el escenario iluminado de azul y morado">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">San Borja · Gran Teatro Nacional</p>
+              <h3 id="t-tania-libertad">Tania Libertad</h3>
+              <p>Concierto de gala «Gracias a la vida que me ha dado tanto», con temas de su disco «¡Ay, amor!» y su repertorio clásico.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="24/10/2026">24/10/2026</li>
+                <li class="chip" title="Consultar cartelera / venta oficial">Consultar cartelera / venta oficial</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-light small" href="https://granteatronacional.pe/eventos" target="_blank" rel="noopener noreferrer">
+                  Sitio oficial <span aria-hidden="true">↗</span><span class="visualmente-oculto"> de Tania Libertad (se abre en una pestaña nueva)</span>
+                </a>
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Gran%20Teatro%20Nacional%20San%20Borja%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Tania Libertad (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 8 · Ballet Folclórico Nacional: Temporada 3 -->
+          <article class="card f-san-borja" aria-labelledby="t-ballet-folclorico-nacional-temporada-3">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_15.jpg"
+                   srcset="imagenes/miniaturas/evento_15.jpg 800w, imagenes/grandes/evento_15.jpg 1600w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="533" loading="lazy" decoding="async"
+                   alt="Bailarines del Ballet Folclórico Nacional en escena, con trajes coloridos y músicos al fondo">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">San Borja · Gran Teatro Nacional</p>
+              <h3 id="t-ballet-folclorico-nacional-temporada-3">Ballet Folclórico Nacional: Temporada 3</h3>
+              <p>Elenco nacional con producciones de gran formato (Retablos) que muestran las danzas y expresiones culturales del Perú.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="30/10/2026">30/10/2026</li>
+                <li class="chip" title="Consultar cartelera / venta oficial">Consultar cartelera / venta oficial</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-light small" href="https://granteatronacional.pe/eventos" target="_blank" rel="noopener noreferrer">
+                  Sitio oficial <span aria-hidden="true">↗</span><span class="visualmente-oculto"> de Ballet Folclórico Nacional: Temporada 3 (se abre en una pestaña nueva)</span>
+                </a>
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Gran%20Teatro%20Nacional%20San%20Borja%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Ballet Folclórico Nacional: Temporada 3 (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tarjeta 9 · Grandes Solistas de la Ópera del Teatro Colón -->
+          <article class="card f-san-borja" aria-labelledby="t-grandes-solistas-de-la-opera-del-teatro-colon">
+            <figure class="card-media">
+              <img src="imagenes/miniaturas/evento_22.jpg"
+                   srcset="imagenes/miniaturas/evento_22.jpg 800w, imagenes/grandes/evento_22.jpg 1080w"
+                   sizes="(max-width: 680px) 100vw, (max-width: 920px) 50vw, 380px"
+                   width="800" height="298" loading="lazy" decoding="async"
+                   alt="Orquesta sinfónica en el escenario dirigida por un director, vista desde arriba">
+            </figure>
+
+            <div class="card-body">
+              <p class="kicker">San Borja · Gran Teatro Nacional</p>
+              <h3 id="t-grandes-solistas-de-la-opera-del-teatro-colon">Grandes Solistas de la Ópera del Teatro Colón</h3>
+              <p>Concierto con la soprano Laura Rizzo, el barítono Omar Carrión y el tenor Fermín Prieto, solistas del Teatro Colón.</p>
+
+              <!-- Datos rápidos -->
+              <ul class="facts" aria-label="Datos rápidos">
+                <li class="chip" title="10/11/2026">10/11/2026</li>
+                <li class="chip" title="Consultar cartelera / venta oficial">Consultar cartelera / venta oficial</li>
+              </ul>
+
+              <div class="card-bottom">
+                <a class="btn btn-light small" href="https://granteatronacional.pe/eventos" target="_blank" rel="noopener noreferrer">
+                  Sitio oficial <span aria-hidden="true">↗</span><span class="visualmente-oculto"> de Grandes Solistas de la Ópera del Teatro Colón (se abre en una pestaña nueva)</span>
+                </a>
+                <a class="btn btn-primary small" href="https://www.google.com/maps/search/?api=1&amp;query=Gran%20Teatro%20Nacional%20San%20Borja%20Lima%20Peru" target="_blank" rel="noopener noreferrer">
+                  Ver en el mapa <span aria-hidden="true">↗</span><span class="visualmente-oculto">: Grandes Solistas de la Ópera del Teatro Colón (se abre en una pestaña nueva)</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
           </div>
 
-          <!-- Contenedor de tarjetas: app.js inserta aquí los resultados filtrados -->
-          <div class="cards" id="results" aria-label="Resultados del catálogo"></div>
-
-          <!-- Paginación: 12 tarjetas por página -->
-          <nav class="pages" aria-label="Paginación">
-            <button class="btn btn-light" id="prev" type="button">← Anterior</button>
-            <span id="page-label" aria-live="polite"></span>
-            <button class="btn btn-light" id="next" type="button">Siguiente →</button>
-          </nav>
         </section>
       </div>
     </main>
 
     <!-- ================= PIE DE PÁGINA ================= -->
-    <!-- .footer-grid es un contenedor flexible de dos columnas que se apilan en móvil -->
     <footer class="site-footer">
-      <div class="wrap footer-grid">
-        <div>
-          <a class="brand brand-footer" href="index.html">Rutas Locales · Lima</a>
-          <p>Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p>
-          <p>
-            Desarrollado por Renzo Omar Villalta Castillo<br>
-            Todos los derechos reservados · 2026
-          </p>
-        </div>
+      <!-- Composición centrada: marca, frase y, bajo una línea, el año y los autores -->
+      <div class="wrap footer-inner">
+        <a class="brand brand-footer" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
+          <span class="logo" aria-hidden="true">
+            <i></i>
+            <i></i>
+            <i></i>
+            <i></i>
+          </span>
+          Rutas Limeñas
+        </a>
+        <p class="footer-lema">Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p>
 
-        <div>
-          <strong>Explora</strong>
-          <p>
-            <a href="atractivos.html">Atractivos</a> ·
-            <a href="restaurantes.html">¿A dónde comer?</a> ·
-            <a href="eventos.html">Eventos</a>
-          </p>
-          <p>
-            Prototipo académico basado en inventario referencial.<br>
-            Las reservas, pagos y rutas calculadas no forman parte de esta versión.
-          </p>
-        </div>
+        <p class="footer-bottom">
+          © 2026 · Desarrollado por Jimmy Lucero, Jorge Hilasaca, Miguel Infante y Renzo Villalta
+        </p>
       </div>
     </footer>
-
-    <!--
-      VENTANA MODAL (<dialog>)
-      Se abre con showModal() desde app.js al pulsar "Ver ficha".
-      Sus contenedores (modal-title, modal-fields, …) se rellenan con
-      los datos del registro elegido.
-    -->
-    <dialog class="dialog" id="detail-modal" aria-labelledby="modal-title">
-      <div class="dialog-content">
-        <div class="dialog-top">
-          <div>
-            <div class="kicker" id="modal-kicker"></div>
-            <h2 id="modal-title"></h2>
-          </div>
-          <button class="close" id="modal-close" type="button" aria-label="Cerrar ficha">×</button>
-        </div>
-
-        <p id="modal-description"></p>
-        <div class="detail-grid" id="modal-fields"></div>
-        <div class="detail-links" id="modal-links"></div>
-        <div class="related" id="related"></div>
-      </div>
-    </dialog>
-
-    <!--
-      Scripts al final del <body>:
-      1) datos.js define window.INVENTARIO con los registros.
-      2) app.js construye la interfaz y responde a las acciones del usuario.
-    -->
-    <script src="assets/datos.js"></script>
-    <script src="assets/app.js"></script>
   </body>
 </html>
