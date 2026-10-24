@@ -39,11 +39,7 @@
           Rutas Limeñas
         </a>
 
-        <!--
-          Menú móvil sin JavaScript: la casilla guarda el estado
-          (marcada = abierto) y la etiqueta funciona como botón.
-          Ambos solo se muestran en pantallas pequeñas.
-        -->
+        <!-- Menú móvil que se muestran en pantallas pequeñas. -->
         <input class="menu-check" type="checkbox" id="menu-check" aria-controls="nav-links">
         <label class="menu-toggle" for="menu-check">
           <span aria-hidden="true">☰</span> Menú
@@ -90,10 +86,10 @@
           </div>
 
           <!--
-            FILTROS SIN JAVASCRIPT
+            FILTROS
             Cada <input type="radio"> va seguido de su <label>. En
             estilos.css, ".catalog:has(#f-X:checked)" oculta las tarjetas
-            que no tienen la clase f-X. No es un <form>: no se envía nada.
+            que no tienen la clase f-X.
           -->
           <fieldset class="filtros">
             <legend>Filtrar por distrito</legend>

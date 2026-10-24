@@ -1,39 +1,9 @@
 /* ============================================================
    estilos.css · Hoja de estilos única de "Rutas Limeñas"
-   ------------------------------------------------------------
-   Sitio construido solo con HTML5 y CSS3 estándar:
-   sin JavaScript, sin frameworks y sin bibliotecas externas.
-
-   Todo lo que en la versión anterior hacía JavaScript se
-   resuelve aquí con selectores y pseudoclases de CSS:
-     - Menú móvil       → casilla oculta + :checked
-     - Filtros          → botones de opción + :has() + :checked
-     - Página activa    → atributo aria-current="page"
-     - Aviso del form.  → :target y validación nativa del navegador
-
-   Índice
-     1.  Variables (paleta y medidas)
-     2.  Estilos base y tipografía
-     3.  Contenedor y utilidades de accesibilidad
-     4.  Cabecera y navegación            → Flexbox
-     5.  Menú móvil sin JavaScript         → :checked
-     6.  Hero (presentación de cada página) → Grid + position
-     7.  Botones
-     8.  Hero ligero (secciones)           → Grid
-     9.  Catálogo: encabezado y filtros
-     10. Tarjetas                          → Grid + Flexbox
-     11. Filtrado de tarjetas              → :has() + :checked
-     12. Multimedia: video y mapa          → Flexbox
-     13. Formulario de sugerencias
-     14. Pie de página
-     15. Diseño responsivo (media queries)
-     16. Compatibilidad y movimiento reducido
    ============================================================ */
 
-
 /* ============================================================
-   1. VARIABLES
-   Propiedades personalizadas: cambiar un color aquí lo cambia
+   1. VARIABLES: Cambiar un color aquí lo cambia
    en todo el sitio.
    ============================================================ */
 :root {
@@ -49,7 +19,6 @@
   --radius: 16px;       /* radio de esquinas habitual */
   --font: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
-
 
 /* ============================================================
    2. ESTILOS BASE Y TIPOGRAFÍA
@@ -237,8 +206,7 @@ p {
   text-decoration: none;
 }
 
-/* La página actual se marca en el HTML con aria-current="page"
-   (antes lo hacía JavaScript con la clase .active) */
+/* La página actual se marca en el HTML con aria-current="page" */
 .links a:hover,
 .links a[aria-current="page"] {
   background-color: var(--mist);
@@ -247,7 +215,7 @@ p {
 
 
 /* ============================================================
-   5. MENÚ MÓVIL SIN JAVASCRIPT
+   5. MENÚ MÓVIL
    Una casilla (input checkbox) guarda el estado abierto/cerrado.
    La etiqueta <label> "☰ Menú" actúa como botón: al pulsarla se
    marca la casilla y la regla ".menu-check:checked ~ .links"
@@ -481,10 +449,8 @@ p {
 
 
 /* ============================================================
-   8. HERO LIGERO (páginas de sección)
+   8. HERO LIGERO (de las páginas de sección)
    Versión baja del hero: título, texto y una sola foto, sin botón.
-   Las pestañas se eliminaron: la navegación es solo el menú
-   del encabezado.
    ============================================================ */
 .hero-ligero .hero-inner {
   grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr);
@@ -625,7 +591,7 @@ p {
   object-fit: cover;
 }
 
-/* Afiche vertical (evento con cartel): la tarjeta es horizontal, así que se
+/* Afiche vertical del evento: la tarjeta es horizontal, así que se
    encuadra la zona de la esfera (sin texto cortado) en lugar del centro */
 .card-media.cartel img {
   object-position: 50% 38%;
@@ -961,8 +927,7 @@ p {
 
 /* ============================================================
    15. DISEÑO RESPONSIVO (media queries)
-   Escritorio primero: los estilos anteriores son para pantallas
-   grandes; aquí se ajustan para tablet y móvil.
+   Se ajustan los estilos para tablet y móvil. Los anteriores son para pantallas grandes.
    ============================================================ */
 
 /* ---- Tablet (hasta 920px) ---- */
@@ -1031,8 +996,7 @@ p {
     height: 230px;
   }
 
-  /* Una columna: el selector con .hero-ligero tiene más especificidad
-     que la regla general de .hero-inner, por eso se repite aquí */
+  /* Se agregó la clase .hero-ligero a .hero-inner para que el selector tenga más especificidad, y se aplique efectivamente cuando la pantalla del dispositivo es más pequeña*/
   .hero-ligero .hero-inner {
     grid-template-columns: 1fr;
     padding-top: 30px;
