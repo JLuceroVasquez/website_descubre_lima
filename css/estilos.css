@@ -213,23 +213,11 @@ p {
   white-space: nowrap;
 }
 
-/* Logotipo: rejilla de 2 × 2 cuadros */
+/* Logotipo: imagen SVG de 2 × 2 cuadros (imagenes/logo.svg) */
 .logo {
-  display: grid;
-  grid-template-columns: repeat(2, 9px);
-  gap: 3px;
-}
-
-.logo i {
-  width: 9px;
-  height: 9px;
-  border-radius: 2px;
-  background-color: var(--primary);
-}
-
-.logo i:nth-child(2),
-.logo i:nth-child(3) {
-  background-color: var(--terra);
+  display: block;
+  width: 21px;
+  height: 21px;
 }
 
 /* Enlaces del menú en fila; flex-wrap permite saltar de línea */
@@ -945,20 +933,10 @@ p {
   font-size: 1.6rem;
 }
 
+/* En el pie se usa la versión clara (logo-claro.svg), visible sobre fondo oscuro */
 .brand-footer .logo {
-  grid-template-columns: repeat(2, 12px);
-  gap: 4px;
-}
-
-.brand-footer .logo i {
-  width: 12px;
-  height: 12px;
-}
-
-/* Sobre el fondo oscuro, el petróleo del logo se aclara para que se vea */
-.brand-footer .logo i:nth-child(1),
-.brand-footer .logo i:nth-child(4) {
-  background-color: #7fb3a8;
+  width: 28px;
+  height: 28px;
 }
 
 /* Frase descriptiva: tamaño de lectura cómodo y ancho limitado */

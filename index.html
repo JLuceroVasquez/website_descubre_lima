@@ -2,16 +2,6 @@
 <!--
   ============================================================
   index.html · Portada de "Rutas Limeñas"
-  ------------------------------------------------------------
-  Página estática: solo HTML5 y CSS3 (css/estilos.css).
-  Sin JavaScript ni frameworks externos.
-  Estructura semántica de la página:
-    header  → logotipo, menú móvil y navegación principal
-    main    → hero
-            → catálogo de 3 secciones (tarjetas)
-            → multimedia: <video> local y mapa con <iframe>
-            → formulario de sugerencias con validación nativa
-    footer  → nombre del sitio, descripción y autores
   ============================================================
 -->
 <html lang="es">
@@ -20,7 +10,16 @@
     <!-- Viewport: necesario para que las media queries funcionen en móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#11343a">
-    <meta name="description" content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con descripciones breves y enlaces a mapas.">
+    <meta name="description" content="Rutas Limeñas reúne atractivos, restaurantes y eventos de Lima Metropolitana, con descripciones breves y enlaces a mapas.">
+    <!-- Favicon -->
+    <link rel="icon" href="imagenes/favicon.svg" type="image/svg+xml">
+    <!-- Etiquetas para compartir (Open Graph). Sustituir SU-DOMINIO por el dominio real al publicar -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_PE">
+    <meta property="og:site_name" content="Rutas Limeñas">
+    <meta property="og:title" content="Rutas Limeñas">
+    <meta property="og:description" content="Atractivos, restaurantes y eventos de Lima Metropolitana en un solo lugar.">
+    <meta property="og:image" content="https://SU-DOMINIO/imagenes/grandes/atractivo_1.jpg">
     <title>Rutas Limeñas</title>
 
     <!-- Hoja de estilos externa: todo el diseño visual del sitio -->
@@ -34,22 +33,13 @@
     <!-- ================= CABECERA ================= -->
     <header class="site-header">
       <div class="wrap nav">
-        <!-- Logotipo: los 4 <i> se dibujan como cuadros con CSS Grid -->
+        <!-- Logotipo: imagen SVG decorativa (el enlace ya tiene aria-label) -->
         <a class="brand" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
-          <span class="logo" aria-hidden="true">
-            <i></i>
-            <i></i>
-            <i></i>
-            <i></i>
-          </span>
+          <img class="logo" src="imagenes/logo.svg" alt="" width="21" height="21">
           Rutas Limeñas
         </a>
 
-        <!--
-          Menú móvil sin JavaScript: la casilla guarda el estado
-          (marcada = abierto) y la etiqueta funciona como botón.
-          Ambos solo se muestran en pantallas pequeñas.
-        -->
+        <!-- Menú móvil que se muestran en pantallas pequeñas. -->
         <input class="menu-check" type="checkbox" id="menu-check" aria-controls="nav-links">
         <label class="menu-toggle" for="menu-check">
           <span aria-hidden="true">☰</span> Menú
@@ -320,12 +310,7 @@
       <!-- Composición centrada: marca, frase y, bajo una línea, el año y los autores -->
       <div class="wrap footer-inner">
         <a class="brand brand-footer" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
-          <span class="logo" aria-hidden="true">
-            <i></i>
-            <i></i>
-            <i></i>
-            <i></i>
-          </span>
+          <img class="logo" src="imagenes/logo-claro.svg" alt="" width="28" height="28">
           Rutas Limeñas
         </a>
         <p class="footer-lema">Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p>

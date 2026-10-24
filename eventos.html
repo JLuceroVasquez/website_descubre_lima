@@ -2,19 +2,6 @@
 <!--
   ============================================================
   eventos.html · Sección "Eventos en Lima" de "Rutas Limeñas"
-  ------------------------------------------------------------
-  Página estática: solo HTML5 y CSS3 (css/estilos.css).
-  Sin JavaScript ni frameworks externos.
-
-  Las 9 tarjetas se escribieron directamente en el HTML con datos
-  del archivo inventario.json (36 registros en la sección).
-  Cómo funciona sin JavaScript:
-    - Filtros  → botones de opción (radio) + regla CSS :has()
-    - Enlaces  → cada tarjeta abre su ubicación en Google Maps
-  Estructura:
-    header  → logotipo, menú móvil y navegación
-    main    → hero ligero + filtros + 9 tarjetas con enlaces
-    footer  → nombre del sitio, descripción y autores
   ============================================================
 -->
 <html lang="es">
@@ -23,7 +10,16 @@
     <!-- Viewport: necesario para que las media queries funcionen en móviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#11343a">
-    <meta name="description" content="Explora atractivos, gastronomía y eventos de Lima Metropolitana con descripciones breves y enlaces a mapas.">
+    <meta name="description" content="Nueve eventos culturales en Miraflores, Barranco y San Borja: exposiciones, teatro, música, ballet y ópera, con fecha, precio y filtro por distrito.">
+    <!-- Favicon -->
+    <link rel="icon" href="imagenes/favicon.svg" type="image/svg+xml">
+    <!-- Etiquetas para compartir (Open Graph). Sustituir SU-DOMINIO por el dominio real al publicar -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_PE">
+    <meta property="og:site_name" content="Rutas Limeñas">
+    <meta property="og:title" content="Eventos en Lima | Rutas Limeñas">
+    <meta property="og:description" content="Eventos culturales en Miraflores, Barranco y San Borja, con fecha, precio y enlace al mapa.">
+    <meta property="og:image" content="https://SU-DOMINIO/imagenes/grandes/evento_13.jpg">
     <title>Eventos en Lima | Rutas Limeñas</title>
 
     <!-- Hoja de estilos externa: todo el diseño visual del sitio -->
@@ -37,14 +33,9 @@
     <!-- ================= CABECERA ================= -->
     <header class="site-header">
       <div class="wrap nav">
-        <!-- Logotipo: los 4 <i> se dibujan como cuadros con CSS Grid -->
+        <!-- Logotipo: imagen SVG decorativa (el enlace ya tiene aria-label) -->
         <a class="brand" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
-          <span class="logo" aria-hidden="true">
-            <i></i>
-            <i></i>
-            <i></i>
-            <i></i>
-          </span>
+          <img class="logo" src="imagenes/logo.svg" alt="" width="21" height="21">
           Rutas Limeñas
         </a>
 
@@ -399,12 +390,7 @@
       <!-- Composición centrada: marca, frase y, bajo una línea, el año y los autores -->
       <div class="wrap footer-inner">
         <a class="brand brand-footer" href="index.html" aria-label="Rutas Limeñas, ir al inicio">
-          <span class="logo" aria-hidden="true">
-            <i></i>
-            <i></i>
-            <i></i>
-            <i></i>
-          </span>
+          <img class="logo" src="imagenes/logo-claro.svg" alt="" width="28" height="28">
           Rutas Limeñas
         </a>
         <p class="footer-lema">Un recorrido por el patrimonio, los sabores y la agenda de Lima Metropolitana.</p>
